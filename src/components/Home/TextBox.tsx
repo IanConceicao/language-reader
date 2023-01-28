@@ -11,13 +11,21 @@ import {
 } from "@mui/material";
 import React, { Component, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 interface TextBoxProps {}
 
 const TextBox: React.FC<TextBoxProps> = () => {
+  /**
+   * TODO:
+   * 1. Remember what languages the user likes for input and output
+   * 2. Set default text based on the loaded language
+   * 3. Make a class for the minwidth style (look into makeStyle?)
+   **/
   const [text, setText] = useState("olá");
   const [error, setError] = useState(false);
-  const [language, setLanguage] = useState("Portuguese");
+  const [inputLanguage, setInputLanguage] = useState("Portuguese");
+  const [outputLanguage, setOutputLanguage] = useState("English");
 
   const supportedLanguages = ["English", "Portuguese", "Spanish"];
 
@@ -35,25 +43,29 @@ const TextBox: React.FC<TextBoxProps> = () => {
         pathname: "/reader",
         search: createSearchParams({
           text: text,
-          language: language,
+          inputLanguage: inputLanguage,
         }).toString(),
       });
     }
   };
 
-  const handleLanguageSelect = (e: SelectChangeEvent) => {
-    setLanguage(e.target.value);
+  const handleInputLanguageSelect = (e: SelectChangeEvent) => {
+    setInputLanguage(e.target.value);
+  };
+
+  const handleOutputLanguageSelect = (e: SelectChangeEvent) => {
+    setOutputLanguage(e.target.value);
   };
 
   return (
     <React.Fragment>
-      <Grid container alignItems="center" justifyContent="center">
+      <Grid container alignItems="center" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Box component="form" noValidate autoComplete="off">
             <TextField
               id="input-text"
               onChange={(e) => setText(e.target.value)}
-              label={`Paste your ${language} text in here`}
+              label={`Paste your ${inputLanguage} text in here`}
               variant="outlined"
               multiline
               rows={4}
@@ -65,22 +77,41 @@ const TextBox: React.FC<TextBoxProps> = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={12} alignItems="center" alignContent="center">
-          <FormControl size="small">
+        <Grid item>
+          <FormControl size="small" sx={{ minWidth: "10em" }}>
             <InputLabel>Text Language</InputLabel>
             <Select
               label="Text Language"
-              onChange={handleLanguageSelect}
-              value={language}
+              onChange={handleInputLanguageSelect}
+              value={inputLanguage}
             >
               {supportedLanguages.map((language) => (
                 <MenuItem value={language}>{language}</MenuItem>
               ))}
             </Select>
           </FormControl>
+        </Grid>
+        <Grid item>
+          <ArrowForwardIcon></ArrowForwardIcon>
+        </Grid>
+        <Grid item>
+          <FormControl size="small" sx={{ minWidth: "10em" }}>
+            <InputLabel>Reader Language</InputLabel>
+            <Select
+              label="Reader Language"
+              onChange={handleOutputLanguageSelect}
+              value={outputLanguage}
+            >
+              {supportedLanguages.map((language) => (
+                <MenuItem value={language}>{language}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
 
+        <Grid item>
           <Button variant="contained" type="button" onClick={handleSubmit}>
-            Translate
+            Go
           </Button>
         </Grid>
       </Grid>
