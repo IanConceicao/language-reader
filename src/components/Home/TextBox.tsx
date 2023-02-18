@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -18,16 +18,27 @@ interface TextBoxProps {}
 const TextBox: React.FC<TextBoxProps> = () => {
   /**
    * TODO:
-   * 1. Remember what languages the user likes for input and output
-   * 2. Set default text based on the loaded language
+   * 1. DONE -Remember what languages the user likes for input and output
+   * 2. Set default text based on the loaded language, like hello or something
    * 3. Make a class for the minwidth style (look into makeStyle?)
    **/
-  const [text, setText] = useState("olá");
-  const [error, setError] = useState(false);
-  const [inputLanguage, setInputLanguage] = useState("Portuguese");
-  const [outputLanguage, setOutputLanguage] = useState("English");
 
-  const supportedLanguages = ["English", "Portuguese", "Spanish"];
+  const supportedLanguages = ["English", "Portuguese", "Spanish", "French"];
+
+  const [text, setText] = useState(localStorage.getItem("text") || "");
+  const [inputLanguage, setInputLanguage] = useState(
+    localStorage.getItem("inputLanguage") || "Portuguese"
+  );
+  const [outputLanguage, setOutputLanguage] = useState(
+    localStorage.getItem("outputLanguage") || "English"
+  );
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("text", text);
+    localStorage.setItem("inputLanguage", inputLanguage);
+    localStorage.setItem("outputLanguage", outputLanguage);
+  }, [text, inputLanguage, outputLanguage]);
 
   const navigate = useNavigate();
 
@@ -41,10 +52,11 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
       navigate({
         pathname: "/reader",
-        search: createSearchParams({
-          text: text,
-          inputLanguage: inputLanguage,
-        }).toString(),
+        // search: createSearchParams({
+        //   text: text,
+        //   inputLanguage: inputLanguage,
+        // }).toString(),
+        // No longer using search params
       });
     }
   };
