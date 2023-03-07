@@ -15,6 +15,18 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Healthy");
 });
 
+/**
+ * TODO:
+ * 1. Move ports to environment variables? Or look into whats proper
+ * 2. Instead of reversing text, call the google translate API (or free version)
+ */
+
+app.post("/translate/", (req: Request, res: Response) => {
+  const { inputLanguage, outputLanguage, text } = req.body;
+  console.log("Hit the backend with " + text);
+  return res.status(200).json({ data: text.split("").reverse().join("") });
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {

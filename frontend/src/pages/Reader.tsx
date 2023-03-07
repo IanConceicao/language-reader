@@ -1,15 +1,43 @@
 import { Container, Paper, Typography } from "@mui/material";
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { Popover as SelectionPopover } from "react-text-selection-popover";
+import { translate } from "../util/ApiCalls";
 
 interface ReaderProps {}
 
 const Reader: React.FC<ReaderProps> = () => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [mouseDown, setMouseDown] = useState(false);
+  const [translation, setTranslation] = useState("");
+  const [highlightedText, setHighlightedText] = useState("");
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
+
+  const updateTranslation = async () => {
+    if (highlightedText) {
+      const response = await translate(
+        inputLanugage,
+        outputLanguage,
+        highlightedText
+      );
+      setTranslation(response.data);
+    } else {
+      setTranslation("");
+    }
+  };
+
+  const getSelectedText = () => {
+    const selection = window.getSelection();
+    if (selection) {
+      return selection.toString();
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    updateTranslation();
+  }, [highlightedText]);
 
   return (
     <React.Fragment>
@@ -21,9 +49,11 @@ const Reader: React.FC<ReaderProps> = () => {
           elevation={4}
           sx={{ mt: 4, p: 2, "min-height": "50vh" }}
           onMouseDown={() => {
+            setHighlightedText("");
             setMouseDown(true);
           }}
           onMouseUp={() => {
+            setHighlightedText(getSelectedText().trim());
             setMouseDown(false);
           }}
         >
@@ -35,7 +65,12 @@ const Reader: React.FC<ReaderProps> = () => {
           <SelectionPopover
             target={ref}
             render={({ clientRect, isCollapsed, textContent }) => {
-              if (mouseDown === true || clientRect == null || isCollapsed)
+              if (
+                !translation ||
+                mouseDown === true ||
+                clientRect == null ||
+                isCollapsed
+              )
                 return null;
 
               const popoverStyles = {
@@ -51,7 +86,7 @@ const Reader: React.FC<ReaderProps> = () => {
 
               return (
                 <div style={popoverStyles}>
-                  <Typography sx={{ p: 1 }}>{textContent}</Typography>
+                  <Typography sx={{ p: 1 }}>{translation}</Typography>
                 </div>
               );
             }}
