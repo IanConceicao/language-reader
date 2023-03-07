@@ -1,3 +1,4 @@
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
   Box,
   Button,
@@ -9,9 +10,8 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import React, { Component, useEffect, useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface TextBoxProps {}
 
@@ -52,17 +52,18 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
       navigate({
         pathname: "/reader",
-        // search: createSearchParams({
-        //   text: text,
-        //   inputLanguage: inputLanguage,
-        // }).toString(),
-        // No longer using search params
       });
     }
   };
 
   const handleInputLanguageSelect = (e: SelectChangeEvent) => {
     setInputLanguage(e.target.value);
+
+    if (e.target.value === outputLanguage) {
+      setOutputLanguage(
+        supportedLanguages.filter((elem) => elem !== e.target.value)[0]
+      );
+    }
   };
 
   const handleOutputLanguageSelect = (e: SelectChangeEvent) => {
@@ -114,9 +115,11 @@ const TextBox: React.FC<TextBoxProps> = () => {
               onChange={handleOutputLanguageSelect}
               value={outputLanguage}
             >
-              {supportedLanguages.map((language) => (
-                <MenuItem value={language}>{language}</MenuItem>
-              ))}
+              {supportedLanguages
+                .filter((elem) => elem !== inputLanguage)
+                .map((language) => (
+                  <MenuItem value={language}>{language}</MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Grid>
