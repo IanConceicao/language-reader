@@ -21,7 +21,7 @@ const Reader: React.FC<ReaderProps> = () => {
         outputLanguage,
         highlightedText
       );
-      setTranslation(response.data);
+      setTranslation(response);
     } else {
       setTranslation("");
     }
@@ -38,6 +38,11 @@ const Reader: React.FC<ReaderProps> = () => {
   useEffect(() => {
     updateTranslation();
   }, [highlightedText]);
+
+  /**
+   * TODO
+   * 1. Move some of these things to components folder
+   */
 
   return (
     <React.Fragment>

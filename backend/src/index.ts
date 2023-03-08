@@ -2,8 +2,10 @@ import * as dotenv from "dotenv";
 import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { translateText } from "./util/ApiCalls";
 
 dotenv.config();
+const PORT = process.env.BACKEND_PORT || 8000;
 
 const app: Application = express();
 
@@ -21,13 +23,23 @@ app.get("/", (req: Request, res: Response) => {
  * 2. Instead of reversing text, call the google translate API (or free version)
  */
 
-app.post("/translate/", (req: Request, res: Response) => {
+app.post("/translate/", async (req: Request, res: Response) => {
   const { inputLanguage, outputLanguage, text } = req.body;
-  console.log("Hit the backend with " + text);
-  return res.status(200).json({ data: text.split("").reverse().join("") });
+  const translated_text = await translateText(
+    inputLanguage,
+    outputLanguage,
+    text
+  );
+  try {
+    res.status(200).json({ data: translated_text });
+  } catch (e: any) {
+    const errorMsg = `Failed to translate from ${inputLanguage} to ${outputLanguage}. ${e.message}`;
+    console.error(errorMsg);
+    return res.status(500).json({
+      message: errorMsg,
+    });
+  }
 });
-
-const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
