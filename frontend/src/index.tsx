@@ -6,7 +6,6 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 if (process.env.NODE_ENV === "production") disableReactDevTools();
-console.log("Node env is: " + process.env.NODE_ENV);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
