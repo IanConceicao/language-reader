@@ -1,6 +1,6 @@
 const BACKEND_URL =
   process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_BACKEND_URL
+    ? "https://language-reader.herokuapp.com/"
     : "http://localhost:8000";
 
 export const translate = async (
