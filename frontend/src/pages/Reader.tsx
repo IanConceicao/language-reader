@@ -14,19 +14,6 @@ const Reader: React.FC<ReaderProps> = () => {
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
 
-  const updateTranslation = async () => {
-    if (highlightedText) {
-      const response = await translate(
-        inputLanugage,
-        outputLanguage,
-        highlightedText
-      );
-      setTranslation(response);
-    } else {
-      setTranslation("");
-    }
-  };
-
   const getSelectedText = () => {
     const selection = window.getSelection();
     if (selection) {
@@ -36,8 +23,20 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   useEffect(() => {
+    const updateTranslation = async () => {
+      if (highlightedText) {
+        const response = await translate(
+          inputLanugage,
+          outputLanguage,
+          highlightedText
+        );
+        setTranslation(response);
+      } else {
+        setTranslation("");
+      }
+    };
     updateTranslation();
-  }, [highlightedText]);
+  }, [inputLanugage, outputLanguage, highlightedText]);
 
   /**
    * TODO
