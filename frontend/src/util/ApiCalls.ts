@@ -1,5 +1,7 @@
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
-console.log("2. Backend URL is " + process.env.BACKEND_URL);
+const BACKEND_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_BACKEND_URL
+    : "http://localhost:8000";
 
 export const translate = async (
   inputLanguage: string,
