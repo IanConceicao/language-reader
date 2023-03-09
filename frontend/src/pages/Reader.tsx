@@ -41,6 +41,7 @@ const Reader: React.FC<ReaderProps> = () => {
   /**
    * TODO
    * 1. Move some of these things to components folder
+   * 2. Add more languages
    */
 
   return (

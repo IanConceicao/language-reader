@@ -21,7 +21,6 @@ const TextBox: React.FC<TextBoxProps> = () => {
    * 1. DONE -Remember what languages the user likes for input and output
    * 2. Set default text based on the loaded language, like hello or something
    * 3. Make a class for the minwidth style (look into makeStyle?)
-   * 4. Programmatically align supportedLanguages with the ISO codes on the backend
    **/
 
   const supportedLanguages = ["English", "Portuguese", "Spanish", "French"];
