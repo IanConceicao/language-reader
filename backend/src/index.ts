@@ -2,7 +2,9 @@ import * as dotenv from "dotenv";
 import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { translateText } from "./util/ApiCalls";
+import { RegistrableController } from "./controllers/RegistrableController";
+import container from "./inversify.config";
+import TYPES from "./types";
 
 dotenv.config();
 const PORT = process.env.BACKEND_PORT || 8000;
@@ -20,26 +22,11 @@ app.get("/", (req: Request, res: Response) => {
 /**
  * TODO:
  * 1. Move ports to environment variables? Or look into whats proper
- * 2. Instead of reversing text, call the google translate API (or free version)
  */
 
-app.post("/translate/", async (req: Request, res: Response) => {
-  const { inputLanguage, outputLanguage, text } = req.body;
-  const translated_text = await translateText(
-    inputLanguage,
-    outputLanguage,
-    text
-  );
-  try {
-    res.status(200).json({ data: translated_text });
-  } catch (e: any) {
-    const errorMsg = `Failed to translate from ${inputLanguage} to ${outputLanguage}. ${e.message}`;
-    console.error(errorMsg);
-    return res.status(500).json({
-      message: errorMsg,
-    });
-  }
-});
+const controllers: RegistrableController[] =
+  container.getAll<RegistrableController>(TYPES.Controller);
+controllers.forEach((controller) => controller.register(app));
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
