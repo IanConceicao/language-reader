@@ -1,11 +1,13 @@
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
+const BACKEND_PATH = process.env.BACKEND_PATH || "http://localhost";
+const BACKEND_PORT = process.env.BACKEND_PORT || ":8000";
+const BACKEND_URL = `${BACKEND_PATH}${BACKEND_PORT}`;
 
 export const translate = async (
   inputLanguage: string,
   outputLanguage: string,
   text: string
 ): Promise<string> => {
-  const url = BACKEND_URL + "/translate/";
+  const url = BACKEND_URL + "/translateText/";
   const body_to_send = {
     inputLanguage: inputLanguage,
     outputLanguage: outputLanguage,

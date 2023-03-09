@@ -5,7 +5,7 @@ import TYPES from "../types";
 
 export interface TranslationService {
   translateText(
-    inputLanguage: string,
+    inputLanguage: string | null,
     outputLanguage: string,
     inputText: string
   ): Promise<string>;
@@ -17,11 +17,12 @@ export class TranslationServiceImpl implements TranslationService {
   private translationRepository!: TranslationRepository;
 
   public translateText = async (
-    inputLanguage: string,
+    inputLanguage: string | null,
     outputLanguage: string,
     inputText: string
   ): Promise<string> => {
-    const inputCode = this.getIsoForLanguage(inputLanguage);
+    const inputCode =
+      inputLanguage === null ? null : this.getIsoForLanguage(inputLanguage);
     const outputCode = this.getIsoForLanguage(outputLanguage);
 
     return await this.translationRepository.translateText(

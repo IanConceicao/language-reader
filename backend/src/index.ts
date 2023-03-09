@@ -19,11 +19,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Healthy");
 });
 
-/**
- * TODO:
- * 1. Move ports to environment variables? Or look into whats proper
- */
-
 const controllers: RegistrableController[] =
   container.getAll<RegistrableController>(TYPES.Controller);
 controllers.forEach((controller) => controller.register(app));

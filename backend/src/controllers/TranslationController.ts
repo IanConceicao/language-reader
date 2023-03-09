@@ -5,7 +5,7 @@ import TYPES from "../types";
 import { RegistrableController } from "./RegistrableController";
 
 interface TranslationPayload {
-  inputLanguage: string;
+  inputLanguage: string | null;
   outputLanguage: string;
   text: string;
 }
@@ -16,7 +16,7 @@ export class TranslationController implements RegistrableController {
   private translationService!: TranslationService;
 
   public register(app: Application): void {
-    app.route("/translate").post(this.translateText);
+    app.route("/translateText").post(this.translateText);
   }
 
   private translateText = async (req: Request, res: Response) => {
