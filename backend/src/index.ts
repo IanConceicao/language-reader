@@ -7,7 +7,7 @@ import container from "./inversify.config";
 import TYPES from "./types";
 
 dotenv.config();
-const PORT = process.env.BACKEND_PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 const app: Application = express();
 
