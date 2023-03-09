@@ -6,6 +6,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 if (process.env.NODE_ENV === "production") disableReactDevTools();
+console.log("1. Backend URL is " + process.env.BACKEND_URL);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

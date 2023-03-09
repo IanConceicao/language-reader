@@ -1,4 +1,5 @@
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
+console.log("2. Backend URL is " + process.env.BACKEND_URL);
 
 export const translate = async (
   inputLanguage: string,
