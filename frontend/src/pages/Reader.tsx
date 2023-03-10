@@ -10,6 +10,7 @@ const Reader: React.FC<ReaderProps> = () => {
   const [mouseDown, setMouseDown] = useState(false);
   const [translation, setTranslation] = useState("");
   const [highlightedText, setHighlightedText] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
@@ -52,8 +53,9 @@ const Reader: React.FC<ReaderProps> = () => {
         </Typography>
         <Paper
           elevation={4}
-          sx={{ mt: 4, p: 2, "min-height": "50vh" }}
+          sx={{ my: 4, p: 2, "min-height": "50vh" }}
           onMouseDown={() => {
+            setScrollPosition(window.scrollY);
             setHighlightedText("");
             setMouseDown(true);
           }}
@@ -62,7 +64,11 @@ const Reader: React.FC<ReaderProps> = () => {
             setMouseDown(false);
           }}
         >
-          <Typography variant="h5" ref={(el) => el !== null && setRef(el)}>
+          <Typography
+            variant="subtitle1"
+            ref={(el) => el !== null && setRef(el)}
+            style={{ whiteSpace: "pre-line" }}
+          >
             {localStorage.getItem("text")}
           </Typography>
         </Paper>
@@ -81,7 +87,7 @@ const Reader: React.FC<ReaderProps> = () => {
               const popoverStyles = {
                 position: "absolute",
                 left: `${clientRect.left + clientRect.width / 2}px`,
-                top: `${clientRect.top - 7}px`,
+                top: `${scrollPosition + clientRect.top - 7}px`,
                 background: "white",
                 borderRadius: "4px",
                 filter: "drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.25))",

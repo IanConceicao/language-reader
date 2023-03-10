@@ -23,7 +23,13 @@ const TextBox: React.FC<TextBoxProps> = () => {
    * 3. Make a class for the minwidth style (look into makeStyle?)
    **/
 
-  const supportedLanguages = ["English", "Portuguese", "Spanish", "French"];
+  const supportedLanguages = [
+    "English",
+    "Portuguese",
+    "Spanish",
+    "French",
+    "German",
+  ];
 
   const [text, setText] = useState(localStorage.getItem("text") || "");
   const [inputLanguage, setInputLanguage] = useState(
@@ -36,9 +42,15 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
   useEffect(() => {
     localStorage.setItem("text", text);
+  }, [text]);
+
+  useEffect(() => {
     localStorage.setItem("inputLanguage", inputLanguage);
+  }, [inputLanguage]);
+
+  useEffect(() => {
     localStorage.setItem("outputLanguage", outputLanguage);
-  }, [text, inputLanguage, outputLanguage]);
+  }, [outputLanguage]);
 
   const navigate = useNavigate();
 
@@ -54,6 +66,11 @@ const TextBox: React.FC<TextBoxProps> = () => {
         pathname: "/reader",
       });
     }
+  };
+
+  const handleClearText = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setText("");
   };
 
   const handleInputLanguageSelect = (e: SelectChangeEvent) => {
@@ -81,14 +98,25 @@ const TextBox: React.FC<TextBoxProps> = () => {
               label={`Paste your ${inputLanguage} text in here`}
               variant="outlined"
               multiline
-              rows={4}
-              defaultValue={text}
+              minRows={8}
+              maxRows={20}
+              value={text}
               fullWidth
               margin="normal"
               error={error}
               helperText={error ? "Enter some text" : ""}
             />
           </Box>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            type="button"
+            color="error"
+            onClick={handleClearText}
+          >
+            Clear
+          </Button>
         </Grid>
         <Grid item>
           <FormControl size="small" sx={{ minWidth: "10em" }}>
@@ -99,7 +127,9 @@ const TextBox: React.FC<TextBoxProps> = () => {
               value={inputLanguage}
             >
               {supportedLanguages.map((language) => (
-                <MenuItem value={language}>{language}</MenuItem>
+                <MenuItem value={language} key={language}>
+                  {language}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -118,15 +148,16 @@ const TextBox: React.FC<TextBoxProps> = () => {
               {supportedLanguages
                 .filter((elem) => elem !== inputLanguage)
                 .map((language) => (
-                  <MenuItem value={language}>{language}</MenuItem>
+                  <MenuItem value={language} key={language}>
+                    {language}
+                  </MenuItem>
                 ))}
             </Select>
           </FormControl>
         </Grid>
-
         <Grid item>
           <Button variant="contained" type="button" onClick={handleSubmit}>
-            Go
+            Read
           </Button>
         </Grid>
       </Grid>
