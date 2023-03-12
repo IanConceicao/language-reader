@@ -18,7 +18,7 @@ const Reader: React.FC<ReaderProps> = () => {
   const getSelectedText = () => {
     const selection = window.getSelection();
     if (selection) {
-      return selection.toString();
+      return selection.toString().trim();
     }
     return "";
   };
@@ -42,7 +42,6 @@ const Reader: React.FC<ReaderProps> = () => {
   /**
    * TODO
    * 1. Move some of these things to components folder
-   * 2. Add more languages
    */
 
   return (
@@ -60,14 +59,14 @@ const Reader: React.FC<ReaderProps> = () => {
             setMouseDown(true);
           }}
           onMouseUp={() => {
-            setHighlightedText(getSelectedText().trim());
+            setHighlightedText(getSelectedText());
             setMouseDown(false);
           }}
         >
           <Typography
             variant="subtitle1"
             ref={(el) => el !== null && setRef(el)}
-            style={{ whiteSpace: "pre-line" }}
+            style={{ whiteSpace: "pre-wrap" }}
           >
             {localStorage.getItem("text")}
           </Typography>
@@ -85,6 +84,7 @@ const Reader: React.FC<ReaderProps> = () => {
                 return null;
 
               const popoverStyles = {
+                willChange: "transform",
                 position: "absolute",
                 left: `${clientRect.left + clientRect.width / 2}px`,
                 top: `${scrollPosition + clientRect.top - 7}px`,

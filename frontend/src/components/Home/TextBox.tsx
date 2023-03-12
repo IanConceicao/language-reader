@@ -29,6 +29,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
     "Spanish",
     "French",
     "German",
+    "Chinese",
+    "Hindi",
+    "Japanese",
+    "Russian",
   ];
 
   const [text, setText] = useState(localStorage.getItem("text") || "");
@@ -87,6 +91,14 @@ const TextBox: React.FC<TextBoxProps> = () => {
     setOutputLanguage(e.target.value);
   };
 
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: "15em",
+      },
+    },
+  };
+
   return (
     <React.Fragment>
       <Grid container alignItems="center" justifyContent="center" spacing={2}>
@@ -125,6 +137,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               label="Text Language"
               onChange={handleInputLanguageSelect}
               value={inputLanguage}
+              MenuProps={MenuProps}
             >
               {supportedLanguages.map((language) => (
                 <MenuItem value={language} key={language}>
@@ -144,6 +157,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               label="Reader Language"
               onChange={handleOutputLanguageSelect}
               value={outputLanguage}
+              MenuProps={MenuProps}
             >
               {supportedLanguages
                 .filter((elem) => elem !== inputLanguage)
