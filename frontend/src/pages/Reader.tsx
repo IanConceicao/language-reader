@@ -1,15 +1,15 @@
 import { Container, Paper, Typography } from "@mui/material";
-import React, { CSSProperties, useEffect, useState } from "react";
-import { Popover as SelectionPopover } from "react-text-selection-popover";
+import React, { useState } from "react";
+import SelectionPopover from "../components/Reader/SelectionPopover";
 import { translate } from "../util/ApiCalls";
 
 interface ReaderProps {}
 
 const Reader: React.FC<ReaderProps> = () => {
-  const [ref, setRef] = useState<HTMLElement | null>(null);
-  const [mouseDown, setMouseDown] = useState(false);
+  const [paragraphRef, setParagraphRef] = useState<HTMLElement | undefined>(
+    undefined
+  );
   const [translation, setTranslation] = useState("");
-  const [highlightedText, setHighlightedText] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
@@ -23,26 +23,22 @@ const Reader: React.FC<ReaderProps> = () => {
     return "";
   };
 
-  useEffect(() => {
-    const updateTranslation = async () => {
-      if (highlightedText) {
-        const response = await translate(
-          inputLanugage,
-          outputLanguage,
-          highlightedText
-        );
-        setTranslation(response);
-      } else {
-        setTranslation("");
-      }
-    };
-    updateTranslation();
-  }, [inputLanugage, outputLanguage, highlightedText]);
+  const clearTranslation = () => {
+    setTranslation("");
+  };
 
-  /**
-   * TODO
-   * 1. Move some of these things to components folder
-   */
+  const updateTranslation = async () => {
+    const highlightedText = getSelectedText();
+    if (highlightedText) {
+      const translation = await translate(
+        inputLanugage,
+        outputLanguage,
+        highlightedText
+      );
+      setTranslation(translation);
+      setScrollPosition(window.scrollY);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -53,56 +49,22 @@ const Reader: React.FC<ReaderProps> = () => {
         <Paper
           elevation={4}
           sx={{ my: 4, p: 2, "min-height": "50vh" }}
-          onMouseDown={() => {
-            setScrollPosition(window.scrollY);
-            setHighlightedText("");
-            setMouseDown(true);
-          }}
-          onMouseUp={() => {
-            setHighlightedText(getSelectedText());
-            setMouseDown(false);
-          }}
+          onMouseDown={clearTranslation}
+          onMouseUp={updateTranslation}
         >
           <Typography
             variant="subtitle1"
-            ref={(el) => el !== null && setRef(el)}
+            ref={(el) => el !== null && setParagraphRef(el)}
             style={{ whiteSpace: "pre-wrap" }}
           >
             {localStorage.getItem("text")}
           </Typography>
-        </Paper>
-        {ref && (
           <SelectionPopover
-            target={ref}
-            render={({ clientRect, isCollapsed, textContent }) => {
-              if (
-                !translation ||
-                mouseDown === true ||
-                clientRect == null ||
-                isCollapsed
-              )
-                return null;
-
-              const popoverStyles = {
-                willChange: "transform",
-                position: "absolute",
-                left: `${clientRect.left + clientRect.width / 2}px`,
-                top: `${scrollPosition + clientRect.top - 7}px`,
-                background: "white",
-                borderRadius: "4px",
-                filter: "drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.25))",
-                transform: "translate(-50%, -100%)",
-                userSelect: "none",
-              } as CSSProperties;
-
-              return (
-                <div style={popoverStyles}>
-                  <Typography sx={{ p: 1 }}>{translation}</Typography>
-                </div>
-              );
-            }}
+            content={translation}
+            baseYPos={scrollPosition}
+            target={paragraphRef}
           />
-        )}
+        </Paper>
       </Container>
     </React.Fragment>
   );

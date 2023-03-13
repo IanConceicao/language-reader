@@ -4,11 +4,13 @@ import {
   Button,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -91,6 +93,12 @@ const TextBox: React.FC<TextBoxProps> = () => {
     setOutputLanguage(e.target.value);
   };
 
+  const swapLanguages = () => {
+    const temp = inputLanguage;
+    setInputLanguage(outputLanguage);
+    setOutputLanguage(temp);
+  };
+
   const MenuProps = {
     PaperProps: {
       style: {
@@ -148,11 +156,15 @@ const TextBox: React.FC<TextBoxProps> = () => {
           </FormControl>
         </Grid>
         <Grid item>
-          <ArrowForwardIcon></ArrowForwardIcon>
+          <Tooltip title="Swap the languages">
+            <IconButton onClick={swapLanguages}>
+              <ArrowForwardIcon></ArrowForwardIcon>
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item>
           <FormControl size="small" sx={{ minWidth: "10em" }}>
-            <InputLabel>Reader Language</InputLabel>
+            <InputLabel>Helper Language</InputLabel>
             <Select
               label="Reader Language"
               onChange={handleOutputLanguageSelect}
