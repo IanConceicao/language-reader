@@ -11,6 +11,7 @@ const Reader: React.FC<ReaderProps> = () => {
   );
   const [translation, setTranslation] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [highlightRect, setHighlightRect] = useState<ClientRect | null>(null);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
@@ -30,14 +31,41 @@ const Reader: React.FC<ReaderProps> = () => {
   const updateTranslation = async () => {
     const highlightedText = getSelectedText();
     if (highlightedText) {
+      setHighlightRecHelper();
+      setScrollPosition(window.scrollY);
       const translation = await translate(
         inputLanugage,
         outputLanguage,
         highlightedText
       );
       setTranslation(translation);
-      setScrollPosition(window.scrollY);
     }
+  };
+
+  const setHighlightRecHelper = () => {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) {
+      return;
+    }
+    const range = sel.getRangeAt(0);
+
+    let position = range.getBoundingClientRect();
+    if (!range.startContainer.textContent) {
+      return;
+    }
+    const char_before = range.startContainer.textContent[range.startOffset - 1];
+    if (char_before === "\n") {
+      // create a clone of our Range so we don't mess with the visible one
+      const clone = range.cloneRange();
+      // check if we are experiencing a bug
+      clone.setStart(range.startContainer, range.startOffset - 1);
+      if (clone.getBoundingClientRect().top === position.top) {
+        // make it select the next character
+        clone.setStart(range.startContainer, range.startOffset + 1);
+        position = clone.getBoundingClientRect();
+      }
+    }
+    setHighlightRect(position);
   };
 
   return (
@@ -55,7 +83,7 @@ const Reader: React.FC<ReaderProps> = () => {
           <Typography
             variant="subtitle1"
             ref={(el) => el !== null && setParagraphRef(el)}
-            style={{ whiteSpace: "pre-wrap" }}
+            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
           >
             {localStorage.getItem("text")}
           </Typography>
@@ -63,6 +91,7 @@ const Reader: React.FC<ReaderProps> = () => {
             content={translation}
             baseYPos={scrollPosition}
             target={paragraphRef}
+            customClientRect={highlightRect}
           />
         </Paper>
       </Container>

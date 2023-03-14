@@ -12,7 +12,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface TextBoxProps {}
@@ -107,6 +107,13 @@ const TextBox: React.FC<TextBoxProps> = () => {
     },
   };
 
+  const setTextHelper = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const val = e.target.value;
+    setText(val.replaceAll("\n", "\n"));
+  };
+
   return (
     <React.Fragment>
       <Grid container alignItems="center" justifyContent="center" spacing={2}>
@@ -114,7 +121,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
           <Box component="form" noValidate autoComplete="off">
             <TextField
               id="input-text"
-              onChange={(e) => setText(e.target.value)}
+              onChange={setTextHelper}
               label={`Paste your ${inputLanguage} text in here`}
               variant="outlined"
               multiline
