@@ -1,4 +1,3 @@
-
 <div align='center'>
   
 <h1 style="border-bottom: none">Language Reader</h1>
@@ -17,12 +16,8 @@
 <p>The Language Reader web app is a tool to help people learn languages by reading. The goal is to offer a reading platform that makes reading a foreign text as conducive to learning as possible.<p>
 
 ## Tech Stack
-* **Fronted:** React.js + Material UI
-* **Server:** Node.js + Express
-* **Langauge API:** Google Cloud Translate
 
-
-
-
-
-
+- **Fronted:** React.js + Material UI
+- **Server:** Node.js + Express
+- **Langauge API:** Google Cloud Translate
+- **Continuous Deployment:** Netlify for the frontend, Heroku for the backend

@@ -31,8 +31,8 @@ const Reader: React.FC<ReaderProps> = () => {
   const updateTranslation = async () => {
     const highlightedText = getSelectedText();
     if (highlightedText) {
-      setHighlightRecHelper();
       setScrollPosition(window.scrollY);
+      setHighlightRecHelper();
       const translation = await translate(
         inputLanugage,
         outputLanguage,
