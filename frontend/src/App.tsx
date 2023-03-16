@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -11,8 +11,12 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { pingBackend } from "./util/ApiCalls";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    pingBackend();
+  }, []);
   return (
     <React.Fragment>
       <CssBaseline />
