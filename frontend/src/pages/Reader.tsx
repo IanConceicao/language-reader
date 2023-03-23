@@ -72,7 +72,8 @@ const Reader: React.FC<ReaderProps> = () => {
     <React.Fragment>
       <Container maxWidth="lg">
         <Typography variant="h4" my={2}>
-          Reading text in {inputLanugage} with help in {outputLanguage}
+          Reading text in {inputLanugage} with help in {outputLanguage}.
+          Highlight any text for a translation.
         </Typography>
         <Paper
           elevation={4}
