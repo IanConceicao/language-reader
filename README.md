@@ -3,9 +3,9 @@
 <h1 style="border-bottom: none">Language Reader</h1>
 <hr>
 
-<p>Explore the language learning tool at: <a href="https://languagereader.netlify.app/">languagereader.netlify.app</a></p>
+<p>Explore the language learning tool at: <a href="https://languagereader.ianconceicao.com">languagereader.netlify.app</a></p>
 
-<a href="https://languagereader.netlify.app/">
+<a href="https://languagereader.ianconceicao.com">
 <img width="300" src="logo-fullsize.png">
 </a>
 
