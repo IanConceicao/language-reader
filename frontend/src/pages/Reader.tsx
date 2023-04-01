@@ -1,5 +1,5 @@
 import { Container, Paper, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { translate } from "../util/ApiCalls";
 
@@ -8,11 +8,20 @@ interface ReaderProps {}
 const Reader: React.FC<ReaderProps> = () => {
   const [translation, setTranslation] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [highlightRect, setHighlightRect] = useState<ClientRect | null>(null);
+  const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
   const [shouldDisplayPopover, setShouldDisplayPopover] = useState(false);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
+
+  useEffect(() => {
+    // Hide popover on screen resize
+    function handleResize() {
+      setShouldDisplayPopover(false);
+    }
+
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   const getSelectedText = () => {
     const selection = window.getSelection();
@@ -26,12 +35,16 @@ const Reader: React.FC<ReaderProps> = () => {
     setShouldDisplayPopover(false);
   };
 
+  function delay(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
   const updateTranslation = async () => {
+    await delay(150); // Avoids highlight not being ready
     const highlightedText = getSelectedText();
-    if (highlightedText) {
-      setTranslation("");
+    if (setHighlightRecHelper() && highlightedText) {
+      // Update location, translation and display
       setScrollPosition(window.scrollY);
-      setHighlightRecHelper();
       const translation = await translate(
         inputLanugage,
         outputLanguage,
@@ -42,16 +55,17 @@ const Reader: React.FC<ReaderProps> = () => {
     }
   };
 
-  const setHighlightRecHelper = () => {
+  const setHighlightRecHelper = (): boolean => {
+    // Returns true if set, false otherwise
     const sel = window.getSelection();
     if (!sel || sel.rangeCount === 0) {
-      return;
+      return false;
     }
     const range = sel.getRangeAt(0);
 
     let position = range.getBoundingClientRect();
     if (!range.startContainer.textContent) {
-      return;
+      return false;
     }
     const char_before = range.startContainer.textContent[range.startOffset - 1];
     if (char_before === "\n") {
@@ -65,7 +79,9 @@ const Reader: React.FC<ReaderProps> = () => {
         position = clone.getBoundingClientRect();
       }
     }
+
     setHighlightRect(position);
+    return true;
   };
 
   return (
@@ -73,22 +89,19 @@ const Reader: React.FC<ReaderProps> = () => {
       <Typography variant="h5">
         ✍️ Highlight any text for a translation.
       </Typography>
-      <Paper
-        elevation={4}
-        sx={{ mt: 4, p: 2, minHeight: "50vh" }}
-        onMouseDown={hideTranslation}
-        onMouseUp={updateTranslation}
-      >
+      <Paper elevation={4} sx={{ mt: 4, p: 2, minHeight: "50vh" }}>
         <Typography
           variant="subtitle1"
           style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+          onMouseDown={hideTranslation}
+          onMouseUp={updateTranslation}
         >
           {localStorage.getItem("text")}
         </Typography>
         <SelectionPopover
           content={translation}
           baseYPos={scrollPosition}
-          customClientRect={highlightRect}
+          domRect={highlightRect}
           display={shouldDisplayPopover}
         />
       </Paper>

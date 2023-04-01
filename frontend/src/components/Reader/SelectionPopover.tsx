@@ -4,14 +4,14 @@ import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
 interface SelectionPopoverProps {
   content: string;
   baseYPos: number;
-  customClientRect?: ClientRect | null;
+  domRect?: DOMRect | null;
   display: boolean;
 }
 
 const SelectionPopover: FunctionComponent<SelectionPopoverProps> = (
   props: SelectionPopoverProps
 ) => {
-  const { content, baseYPos, customClientRect, display } = props;
+  const { content, baseYPos, domRect: customClientRect, display } = props;
 
   const [popoverStyles, setPopoverStyles] = useState<CSSProperties>({});
 
