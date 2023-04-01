@@ -6,9 +6,6 @@ import { translate } from "../util/ApiCalls";
 interface ReaderProps {}
 
 const Reader: React.FC<ReaderProps> = () => {
-  const [paragraphRef, setParagraphRef] = useState<HTMLElement | undefined>(
-    undefined
-  );
   const [translation, setTranslation] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [highlightRect, setHighlightRect] = useState<ClientRect | null>(null);
@@ -25,24 +22,23 @@ const Reader: React.FC<ReaderProps> = () => {
     return "";
   };
 
-  const clearTranslation = () => {
+  const hideTranslation = () => {
     setShouldDisplayPopover(false);
-    setTranslation("");
   };
 
   const updateTranslation = async () => {
-    clearTranslation();
     const highlightedText = getSelectedText();
     if (highlightedText) {
+      setTranslation("");
       setScrollPosition(window.scrollY);
       setHighlightRecHelper();
-      setShouldDisplayPopover(true);
       const translation = await translate(
         inputLanugage,
         outputLanguage,
         highlightedText
       );
       setTranslation(translation);
+      setShouldDisplayPopover(true);
     }
   };
 
@@ -79,13 +75,12 @@ const Reader: React.FC<ReaderProps> = () => {
       </Typography>
       <Paper
         elevation={4}
-        sx={{ mt: 4, p: 2, "min-height": "50vh" }}
-        onMouseDown={clearTranslation}
+        sx={{ mt: 4, p: 2, minHeight: "50vh" }}
+        onMouseDown={hideTranslation}
         onMouseUp={updateTranslation}
       >
         <Typography
           variant="subtitle1"
-          ref={(el) => el !== null && setParagraphRef(el)}
           style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
         >
           {localStorage.getItem("text")}
@@ -93,7 +88,6 @@ const Reader: React.FC<ReaderProps> = () => {
         <SelectionPopover
           content={translation}
           baseYPos={scrollPosition}
-          target={paragraphRef}
           customClientRect={highlightRect}
           display={shouldDisplayPopover}
         />
