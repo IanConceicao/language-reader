@@ -12,6 +12,7 @@ const Reader: React.FC<ReaderProps> = () => {
   const [translation, setTranslation] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [highlightRect, setHighlightRect] = useState<ClientRect | null>(null);
+  const [shouldDisplayPopover, setShouldDisplayPopover] = useState(false);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
@@ -25,14 +26,17 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   const clearTranslation = () => {
+    setShouldDisplayPopover(false);
     setTranslation("");
   };
 
   const updateTranslation = async () => {
+    clearTranslation();
     const highlightedText = getSelectedText();
     if (highlightedText) {
       setScrollPosition(window.scrollY);
       setHighlightRecHelper();
+      setShouldDisplayPopover(true);
       const translation = await translate(
         inputLanugage,
         outputLanguage,
@@ -69,34 +73,32 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <React.Fragment>
-      <Container maxWidth="lg">
-        <Typography variant="h4" my={2}>
-          Reading text in {inputLanugage} with help in {outputLanguage}.
-          Highlight any text for a translation.
-        </Typography>
-        <Paper
-          elevation={4}
-          sx={{ my: 4, p: 2, "min-height": "50vh" }}
-          onMouseDown={clearTranslation}
-          onMouseUp={updateTranslation}
+    <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
+      <Typography variant="h5">
+        ✍️ Highlight any text for a translation.
+      </Typography>
+      <Paper
+        elevation={4}
+        sx={{ mt: 4, p: 2, "min-height": "50vh" }}
+        onMouseDown={clearTranslation}
+        onMouseUp={updateTranslation}
+      >
+        <Typography
+          variant="subtitle1"
+          ref={(el) => el !== null && setParagraphRef(el)}
+          style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
         >
-          <Typography
-            variant="subtitle1"
-            ref={(el) => el !== null && setParagraphRef(el)}
-            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-          >
-            {localStorage.getItem("text")}
-          </Typography>
-          <SelectionPopover
-            content={translation}
-            baseYPos={scrollPosition}
-            target={paragraphRef}
-            customClientRect={highlightRect}
-          />
-        </Paper>
-      </Container>
-    </React.Fragment>
+          {localStorage.getItem("text")}
+        </Typography>
+        <SelectionPopover
+          content={translation}
+          baseYPos={scrollPosition}
+          target={paragraphRef}
+          customClientRect={highlightRect}
+          display={shouldDisplayPopover}
+        />
+      </Paper>
+    </Container>
   );
 };
 

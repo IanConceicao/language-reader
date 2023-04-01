@@ -116,7 +116,13 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
   return (
     <React.Fragment>
-      <Grid container alignItems="center" justifyContent="center" spacing={2}>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        spacing={2}
+        marginBottom={20}
+      >
         <Grid item xs={12}>
           <Box component="form" noValidate autoComplete="off">
             <TextField
@@ -132,6 +138,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               margin="normal"
               error={error}
               helperText={error ? "Enter some text" : ""}
+              sx={{ backgroundColor: "white" }}
             />
           </Box>
         </Grid>
@@ -146,7 +153,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
           </Button>
         </Grid>
         <Grid item>
-          <FormControl size="small" sx={{ minWidth: "10em" }}>
+          <FormControl
+            size="small"
+            sx={{ minWidth: "10em", backgroundColor: "white" }}
+          >
             <InputLabel>Text Language</InputLabel>
             <Select
               label="Text Language"
@@ -170,7 +180,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
           </Tooltip>
         </Grid>
         <Grid item>
-          <FormControl size="small" sx={{ minWidth: "10em" }}>
+          <FormControl
+            size="small"
+            sx={{ minWidth: "10em", backgroundColor: "white" }}
+          >
             <InputLabel>Helper Language</InputLabel>
             <Select
               label="Reader Language"

@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { CSSProperties, FunctionComponent } from "react";
 import { Popover } from "react-text-selection-popover";
 
@@ -7,24 +7,20 @@ interface SelectionPopoverProps {
   baseYPos: number;
   target?: HTMLElement;
   customClientRect?: ClientRect | null;
+  display: boolean;
 }
 
 const SelectionPopover: FunctionComponent<SelectionPopoverProps> = (
   props: SelectionPopoverProps
 ) => {
-  const { content, baseYPos, target, customClientRect } = props;
+  const { content, baseYPos, target, customClientRect, display } = props;
 
   return (
     <Popover
       mount={target}
       target={target}
       render={({ clientRect, isCollapsed, textContent }) => {
-        if (
-          content === "" ||
-          customClientRect == null ||
-          clientRect == null ||
-          isCollapsed
-        ) {
+        if (!display || customClientRect == null) {
           return null;
         }
 
@@ -42,7 +38,9 @@ const SelectionPopover: FunctionComponent<SelectionPopoverProps> = (
 
         return (
           <div style={popoverStyles}>
-            <Typography sx={{ p: 1 }}>{content}</Typography>
+            <Typography sx={{ p: 1 }}>
+              {content ? content : <CircularProgress size="1rem" />}
+            </Typography>
           </div>
         );
       }}
