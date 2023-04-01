@@ -85,27 +85,27 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
-      <Typography variant="h5">
-        ✍️ Highlight any text for a translation.
-      </Typography>
-      <Paper elevation={4} sx={{ mt: 4, p: 2, minHeight: "50vh" }}>
-        <Typography
-          variant="subtitle1"
-          style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-          onMouseDown={hideTranslation}
-          onMouseUp={updateTranslation}
-        >
-          {localStorage.getItem("text")}
+    <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
+      <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
+        <Typography variant="h5" className="disable-text-selection">
+          ✍️ Highlight any words or sentences for a translation.
         </Typography>
-        <SelectionPopover
-          content={translation}
-          baseYPos={scrollPosition}
-          domRect={highlightRect}
-          display={shouldDisplayPopover}
-        />
-      </Paper>
-    </Container>
+        <Paper elevation={4} sx={{ mt: 4, p: 2, minHeight: "50vh" }}>
+          <Typography
+            variant="subtitle1"
+            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+          >
+            {localStorage.getItem("text")}
+          </Typography>
+          <SelectionPopover
+            content={translation}
+            baseYPos={scrollPosition}
+            domRect={highlightRect}
+            display={shouldDisplayPopover}
+          />
+        </Paper>
+      </Container>
+    </div>
   );
 };
 
