@@ -1,7 +1,6 @@
 <div align='center'>
   
 <h1 style="border-bottom: none">Language Reader</h1>
-<hr>
 
 <p>Explore the language learning tool at: <a href="https://languagereader.ianconceicao.com">LanguageReader.IanConceicao.com</a></p>
 
