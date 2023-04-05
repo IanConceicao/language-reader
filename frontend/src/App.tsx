@@ -14,6 +14,8 @@ import "@fontsource/roboto/700.css";
 import { pingBackend } from "./util/ApiCalls";
 
 // Instructions on how to incorporate light and dark here: https://stackoverflow.com/questions/59145165/change-root-background-color-with-material-ui-theme
+// More instructions: https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
+
 const customTheme = createTheme({
   palette: {
     background: {
@@ -27,16 +29,18 @@ const App: React.FC = () => {
     pingBackend();
   }, []);
   return (
-    <ThemeProvider theme={customTheme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/reader" element={<Reader />}></Route>
-          <Route path="*" element={<Lost />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <React.Fragment>
+      <ThemeProvider theme={customTheme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/reader" element={<Reader />}></Route>
+            <Route path="*" element={<Lost />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </React.Fragment>
   );
 };
 

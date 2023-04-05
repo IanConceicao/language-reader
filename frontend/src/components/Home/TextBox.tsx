@@ -1,4 +1,6 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useTheme } from "@mui/material/styles";
+
 import {
   Box,
   Button,
@@ -18,12 +20,7 @@ import { useNavigate } from "react-router-dom";
 interface TextBoxProps {}
 
 const TextBox: React.FC<TextBoxProps> = () => {
-  /**
-   * TODO:
-   * 1. DONE -Remember what languages the user likes for input and output
-   * 2. Set default text based on the loaded language, like hello or something
-   * 3. Make a class for the minwidth style (look into makeStyle?)
-   **/
+  const theme = useTheme();
 
   const supportedLanguages = [
     "English",
@@ -138,7 +135,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               margin="normal"
               error={error}
               helperText={error ? "Enter some text" : ""}
-              sx={{ backgroundColor: "white" }}
+              sx={{ backgroundColor: theme.palette.background.paper }}
             />
           </Box>
         </Grid>
@@ -155,7 +152,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
         <Grid item>
           <FormControl
             size="small"
-            sx={{ minWidth: "10em", backgroundColor: "white" }}
+            sx={{
+              minWidth: "10em",
+              backgroundColor: theme.palette.background.paper,
+            }}
           >
             <InputLabel>Text Language</InputLabel>
             <Select
@@ -182,7 +182,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
         <Grid item>
           <FormControl
             size="small"
-            sx={{ minWidth: "10em", backgroundColor: "white" }}
+            sx={{
+              minWidth: "10em",
+              backgroundColor: theme.palette.background.paper,
+            }}
           >
             <InputLabel>Helper Language</InputLabel>
             <Select

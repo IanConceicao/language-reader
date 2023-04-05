@@ -1,5 +1,5 @@
-import { Container, Paper, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Container, Paper, PopperProps, Typography } from "@mui/material";
+import React, { useState } from "react";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { translate } from "../util/ApiCalls";
 
@@ -7,29 +7,11 @@ interface ReaderProps {}
 
 const Reader: React.FC<ReaderProps> = () => {
   const [translation, setTranslation] = useState("");
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
+  const [anchorEl, setAnchorEl] = useState<PopperProps["anchorEl"]>(null);
   const [shouldDisplayPopover, setShouldDisplayPopover] = useState(false);
 
   const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
   const outputLanguage = localStorage.getItem("outputLanguage") || "English";
-
-  useEffect(() => {
-    // Hide popover on screen resize
-    function handleResize() {
-      setShouldDisplayPopover(false);
-    }
-
-    window.addEventListener("resize", handleResize);
-  }, []);
-
-  const getSelectedText = () => {
-    const selection = window.getSelection();
-    if (selection) {
-      return selection.toString().trim();
-    }
-    return "";
-  };
 
   const hideTranslation = () => {
     setShouldDisplayPopover(false);
@@ -40,48 +22,60 @@ const Reader: React.FC<ReaderProps> = () => {
   }
 
   const updateTranslation = async () => {
-    await delay(150); // Avoids highlight not being ready
-    const highlightedText = getSelectedText();
-    if (setHighlightRecHelper() && highlightedText) {
-      // Update location, translation and display
-      setScrollPosition(window.scrollY);
-      const translation = await translate(
-        inputLanugage,
-        outputLanguage,
-        highlightedText
-      );
-      setTranslation(translation);
-      setShouldDisplayPopover(true);
-    }
-  };
+    await delay(200);
+    // Sometimes highlight is still changing.
+    // This is a bit of a magic number, but it is hard to predict if it is about to change. I am not sure a better way to do this
 
-  const setHighlightRecHelper = (): boolean => {
-    // Returns true if set, false otherwise
-    const sel = window.getSelection();
-    if (!sel || sel.rangeCount === 0) {
-      return false;
+    const selection = window.getSelection();
+    if (
+      !selection ||
+      selection.anchorOffset === selection.focusOffset || // Empty
+      !selection.toString().trim() || // Blank text
+      selection.rangeCount === 0
+    ) {
+      return null;
     }
-    const range = sel.getRangeAt(0);
 
-    let position = range.getBoundingClientRect();
-    if (!range.startContainer.textContent) {
-      return false;
+    let range: Range;
+    try {
+      // Avoid strange bug where range changes later
+      range = selection.getRangeAt(0);
+    } catch (e) {
+      return null;
     }
-    const char_before = range.startContainer.textContent[range.startOffset - 1];
-    if (char_before === "\n") {
-      // create a clone of our Range so we don't mess with the visible one
-      const clone = range.cloneRange();
-      // check if we are experiencing a bug
-      clone.setStart(range.startContainer, range.startOffset - 1);
-      if (clone.getBoundingClientRect().top === position.top) {
-        // make it select the next character
-        clone.setStart(range.startContainer, range.startOffset + 1);
-        position = clone.getBoundingClientRect();
+
+    const getBoundingClientRect = () => {
+      let position = range.getBoundingClientRect();
+      if (!range.startContainer.textContent) {
+        return position;
       }
-    }
+      const char_before =
+        range.startContainer.textContent[range.startOffset - 1];
+      if (char_before === "\n") {
+        // This hunts down a Safari bug where the rect is wrong in case of after newlines
+        // create a clone of our Range so we don't mess with the visible one
+        const clone = range.cloneRange();
+        // check if we are experiencing a bug
+        clone.setStart(range.startContainer, range.startOffset - 1);
+        if (clone.getBoundingClientRect().top === position.top) {
+          // make it select the next character
+          clone.setStart(range.startContainer, range.startOffset + 1);
+          position = clone.getBoundingClientRect();
+        }
+      }
 
-    setHighlightRect(position);
-    return true;
+      return position;
+    };
+
+    setAnchorEl({ getBoundingClientRect });
+
+    const translation = await translate(
+      inputLanugage,
+      outputLanguage,
+      selection.toString().trim()
+    );
+    setTranslation(translation);
+    setShouldDisplayPopover(true);
   };
 
   return (
@@ -99,8 +93,7 @@ const Reader: React.FC<ReaderProps> = () => {
           </Typography>
           <SelectionPopover
             content={translation}
-            baseYPos={scrollPosition}
-            domRect={highlightRect}
+            anchorEl={anchorEl}
             display={shouldDisplayPopover}
           />
         </Paper>
