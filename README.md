@@ -25,6 +25,7 @@
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Auto-detect input language
 - 🔲 Support other input types, like scanning a book
+- 🔲 Mobile Friendly
 
 ## Tech Stack
 

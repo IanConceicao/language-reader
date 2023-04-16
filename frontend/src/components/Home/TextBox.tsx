@@ -1,6 +1,4 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useTheme } from "@mui/material/styles";
-
 import {
   Box,
   Button,
@@ -21,8 +19,6 @@ import { useNavigate } from "react-router-dom";
 interface TextBoxProps {}
 
 const TextBox: React.FC<TextBoxProps> = () => {
-  const theme = useTheme();
-
   const supportedLanguages = [
     "English",
     "Portuguese",
