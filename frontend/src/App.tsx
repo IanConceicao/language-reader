@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -16,7 +16,7 @@ import { pingBackend } from "./util/ApiCalls";
 // Instructions on how to incorporate light and dark here: https://stackoverflow.com/questions/59145165/change-root-background-color-with-material-ui-theme
 // More instructions: https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 
-const customTheme = createTheme({
+const lightTheme = createTheme({
   palette: {
     background: {
       default: "#fafafa",
@@ -24,13 +24,56 @@ const customTheme = createTheme({
   },
 });
 
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      paper: "#272727",
+    },
+  },
+});
+
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
 const App: React.FC = () => {
   useEffect(() => {
     pingBackend();
   }, []);
+
+  const getInitialMode = (): "light" | "dark" => {
+    if (
+      window.matchMedia("(prefers-color-scheme: dark)").matches ||
+      localStorage.getItem("theme") === "dark"
+    ) {
+      return "dark";
+    } else {
+      return "light";
+    }
+  };
+
+  const [mode, setMode] = useState<"light" | "dark">(() => getInitialMode());
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+
+  const theme = useMemo(
+    () => (mode === "light" ? lightTheme : darkTheme),
+    [mode]
+  );
+
+  useEffect(() => {
+    localStorage.setItem("theme", mode);
+  }, [mode]);
+
   return (
-    <React.Fragment>
-      <ThemeProvider theme={customTheme}>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
           <Routes>
@@ -40,7 +83,7 @@ const App: React.FC = () => {
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
-    </React.Fragment>
+    </ColorModeContext.Provider>
   );
 };
 

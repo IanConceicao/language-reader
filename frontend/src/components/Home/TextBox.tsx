@@ -9,6 +9,7 @@ import {
   IconButton,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   SelectChangeEvent,
   TextField,
@@ -113,103 +114,95 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
   return (
     <React.Fragment>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-        marginBottom={20}
-      >
-        <Grid item xs={12}>
-          <Box component="form" noValidate autoComplete="off">
-            <TextField
-              id="input-text"
-              onChange={setTextHelper}
-              label={`Paste your ${inputLanguage} text in here`}
-              variant="outlined"
-              multiline
-              minRows={8}
-              maxRows={20}
-              value={text}
-              fullWidth
-              margin="normal"
-              error={error}
-              helperText={error ? "Enter some text" : ""}
-              sx={{ backgroundColor: theme.palette.background.paper }}
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            type="button"
-            color="error"
-            onClick={handleClearText}
-          >
-            Clear
-          </Button>
-        </Grid>
-        <Grid item>
-          <FormControl
-            size="small"
-            sx={{
-              minWidth: "10em",
-              backgroundColor: theme.palette.background.paper,
-            }}
-          >
-            <InputLabel>Text Language</InputLabel>
-            <Select
-              label="Text Language"
-              onChange={handleInputLanguageSelect}
-              value={inputLanguage}
-              MenuProps={MenuProps}
+      <Paper elevation={2} sx={{ padding: 2 }}>
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
+          <Grid item xs={12}>
+            <Box component="form" noValidate autoComplete="off">
+              <TextField
+                id="input-text"
+                onChange={setTextHelper}
+                label={`Paste your ${inputLanguage} text in here`}
+                variant="outlined"
+                multiline
+                minRows={8}
+                maxRows={20}
+                value={text}
+                fullWidth
+                error={error}
+                helperText={error ? "Enter some text" : ""}
+              />
+            </Box>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              type="button"
+              color="error"
+              onClick={handleClearText}
             >
-              {supportedLanguages.map((language) => (
-                <MenuItem value={language} key={language}>
-                  {language}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <Tooltip title="Swap the languages">
-            <IconButton onClick={swapLanguages}>
-              <ArrowForwardIcon></ArrowForwardIcon>
-            </IconButton>
-          </Tooltip>
-        </Grid>
-        <Grid item>
-          <FormControl
-            size="small"
-            sx={{
-              minWidth: "10em",
-              backgroundColor: theme.palette.background.paper,
-            }}
-          >
-            <InputLabel>Helper Language</InputLabel>
-            <Select
-              label="Reader Language"
-              onChange={handleOutputLanguageSelect}
-              value={outputLanguage}
-              MenuProps={MenuProps}
+              Clear
+            </Button>
+          </Grid>
+          <Grid item>
+            <FormControl
+              size="small"
+              sx={{
+                minWidth: "10em",
+              }}
             >
-              {supportedLanguages
-                .filter((elem) => elem !== inputLanguage)
-                .map((language) => (
+              <InputLabel>Text Language</InputLabel>
+              <Select
+                label="Text Language"
+                onChange={handleInputLanguageSelect}
+                value={inputLanguage}
+                MenuProps={MenuProps}
+              >
+                {supportedLanguages.map((language) => (
                   <MenuItem value={language} key={language}>
                     {language}
                   </MenuItem>
                 ))}
-            </Select>
-          </FormControl>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Tooltip title="Swap the languages">
+              <IconButton onClick={swapLanguages}>
+                <ArrowForwardIcon></ArrowForwardIcon>
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <FormControl
+              size="small"
+              sx={{
+                minWidth: "10em",
+              }}
+            >
+              <InputLabel>Helper Language</InputLabel>
+              <Select
+                label="Reader Language"
+                onChange={handleOutputLanguageSelect}
+                value={outputLanguage}
+                MenuProps={MenuProps}
+              >
+                {supportedLanguages
+                  .filter((elem) => elem !== inputLanguage)
+                  .map((language) => (
+                    <MenuItem value={language} key={language}>
+                      {language}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" type="button" onClick={handleSubmit}>
+              Read
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button variant="contained" type="button" onClick={handleSubmit}>
-            Read
-          </Button>
-        </Grid>
-      </Grid>
+      </Paper>
     </React.Fragment>
   );
 };

@@ -20,8 +20,11 @@
 
 - ✅ Highlight any piece of text to translate it
 - ✅ Supports most common languages
+- ✅ Dark Mode
+- 🔲 Handle State better with a state library like Redux or Mobx
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Auto-detect input language
+- 🔲 Support other input types, like scanning a book
 
 ## Tech Stack
 

@@ -1,5 +1,6 @@
-import { Container, Paper, PopperProps, Typography } from "@mui/material";
+import { Container, Grid, Paper, PopperProps, Typography } from "@mui/material";
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { translate } from "../util/ApiCalls";
 
@@ -79,26 +80,35 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
-      <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
-        <Typography variant="h5" className="disable-text-selection">
-          ✍️ Highlight any words or sentences for a translation.
-        </Typography>
-        <Paper elevation={4} sx={{ mt: 4, p: 2, minHeight: "50vh" }}>
-          <Typography
-            variant="subtitle1"
-            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-          >
-            {localStorage.getItem("text")}
-          </Typography>
-          <SelectionPopover
-            content={translation}
-            anchorEl={anchorEl}
-            display={shouldDisplayPopover}
-          />
-        </Paper>
-      </Container>
-    </div>
+    <>
+      <Navbar></Navbar>
+      <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
+        <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
+          <Grid container alignContent="center" spacing={6} direction="column">
+            <Grid item>
+              <Typography variant="h5" className="disable-text-selection">
+                ✍️ Highlight any words or sentences for a translation.
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
+                <Typography
+                  variant="subtitle1"
+                  style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+                >
+                  {localStorage.getItem("text")}
+                </Typography>
+                <SelectionPopover
+                  content={translation}
+                  anchorEl={anchorEl}
+                  display={shouldDisplayPopover}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+    </>
   );
 };
 
