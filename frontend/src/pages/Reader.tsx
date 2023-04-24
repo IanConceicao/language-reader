@@ -91,7 +91,7 @@ const Reader: React.FC<ReaderProps> = () => {
                 className="disable-text-selection"
                 fontFamily={"monospace"}
               >
-                ✍️ Highlight any words or sentences for a translation.
+                ✍️ Highlight any words or sentences for a translation
               </Typography>
             </Grid>
             <Grid item>

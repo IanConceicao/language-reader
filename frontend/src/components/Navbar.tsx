@@ -26,15 +26,14 @@ const Navbar: React.FC<NavbarPropos> = () => {
             https://mui.com/material-ui/customization/dark-mode/
             */}
             <Typography
-              variant="h6"
+              variant="h4"
               noWrap
               component="a"
-              href="https://github.com/IanConceicao/language-reader"
+              href="/"
               sx={{
                 mr: 2,
                 display: { md: "flex" },
                 fontFamily: "monospace",
-                fontSize: 25,
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
