@@ -84,9 +84,13 @@ const Reader: React.FC<ReaderProps> = () => {
       <Navbar></Navbar>
       <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
         <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
-          <Grid container alignContent="center" spacing={6} direction="column">
+          <Grid container alignContent="center" spacing={4} direction="column">
             <Grid item>
-              <Typography variant="h5" className="disable-text-selection">
+              <Typography
+                variant="h5"
+                className="disable-text-selection"
+                fontFamily={"monospace"}
+              >
                 ✍️ Highlight any words or sentences for a translation.
               </Typography>
             </Grid>

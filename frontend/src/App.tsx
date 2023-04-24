@@ -2,7 +2,12 @@ import React, { createContext, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  createTheme,
+  CssBaseline,
+  ThemeOptions,
+  ThemeProvider,
+} from "@mui/material";
 import Home from "./pages/Home";
 import Lost from "./pages/Lost";
 import Reader from "./pages/Reader";
@@ -16,20 +21,31 @@ import { pingBackend } from "./util/ApiCalls";
 // Instructions on how to incorporate light and dark here: https://stackoverflow.com/questions/59145165/change-root-background-color-with-material-ui-theme
 // More instructions: https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 
+const sharedTheme: ThemeOptions = { shape: { borderRadius: 12 } };
+
 const lightTheme = createTheme({
+  ...sharedTheme,
   palette: {
     background: {
-      default: "#fafafa",
+      default: "#f6f8fc",
+    },
+    primary: {
+      main: "#03A9F4",
+      light: "#4FC3F7",
+      dark: "#0277BD",
+    },
+    warning: {
+      main: "#F44336",
+      light: "#E57373",
+      dark: "#C62828",
     },
   },
 });
 
 const darkTheme = createTheme({
+  ...sharedTheme,
   palette: {
     mode: "dark",
-    background: {
-      paper: "#272727",
-    },
   },
 });
 

@@ -131,10 +131,12 @@ const TextBox: React.FC<TextBoxProps> = () => {
           </Grid>
           <Grid item>
             <Button
-              variant="contained"
+              // Todo: Make these buttons a styled component or some way to share their style
+              variant="outlined"
               type="button"
               color="error"
               onClick={handleClearText}
+              sx={{ textTransform: "none" }}
             >
               Clear
             </Button>
@@ -193,7 +195,12 @@ const TextBox: React.FC<TextBoxProps> = () => {
             </FormControl>
           </Grid>
           <Grid item>
-            <Button variant="contained" type="button" onClick={handleSubmit}>
+            <Button
+              variant="outlined"
+              type="button"
+              onClick={handleSubmit}
+              sx={{ textTransform: "none" }}
+            >
               Read
             </Button>
           </Grid>
