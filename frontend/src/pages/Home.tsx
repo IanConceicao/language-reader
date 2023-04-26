@@ -11,7 +11,7 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <>
       <Navbar></Navbar>
-      <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
+      <Container maxWidth="lg" sx={{ mt: 1, mb: 10 }}>
         <Stack alignContent="center" spacing={4} direction="column">
           <Stack alignItems="center" direction="row" spacing={2}>
             <KeyboardDoubleArrowRightOutlinedIcon />

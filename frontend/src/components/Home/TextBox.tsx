@@ -4,7 +4,6 @@ import {
   Button,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -15,6 +14,7 @@ import {
 } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CustomIconButton from "../SlowIconButton";
 
 interface TextBoxProps {}
 
@@ -117,7 +117,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               <TextField
                 id="input-text"
                 onChange={setTextHelper}
-                label={`Paste your ${inputLanguage} text in here`}
+                label={inputLanguage}
                 variant="outlined"
                 multiline
                 minRows={8}
@@ -164,10 +164,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
             </FormControl>
           </Grid>
           <Grid item>
-            <Tooltip title="Swap the languages">
-              <IconButton onClick={swapLanguages}>
+            <Tooltip enterDelay={500} title="Swap the languages">
+              <CustomIconButton onClick={swapLanguages}>
                 <ArrowForwardIcon></ArrowForwardIcon>
-              </IconButton>
+              </CustomIconButton>
             </Tooltip>
           </Grid>
           <Grid item>

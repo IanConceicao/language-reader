@@ -90,7 +90,7 @@ const Reader: React.FC<ReaderProps> = () => {
     <>
       <Navbar></Navbar>
       <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
-        <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
+        <Container maxWidth="lg" sx={{ mt: 1, mb: 10 }}>
           <Stack direction="column" spacing={4}>
             <Stack alignItems="center" direction="row" spacing={2}>
               <CreateIcon />

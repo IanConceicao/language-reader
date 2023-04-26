@@ -4,26 +4,15 @@ import ModeNightIcon from "@mui/icons-material/ModeNight";
 import {
   AppBar,
   Container,
-  IconButton,
-  IconButtonProps,
   Stack,
-  styled,
   Toolbar,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext } from "../App";
-
-const CustomIconButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
-  transition: theme.transitions.create(["color", "transform"], {
-    duration: theme.transitions.duration.standard,
-  }),
-  "&:hover": {
-    color: theme.palette.primary.main,
-    backgroundColor: "transparent",
-  },
-}));
+import CustomIconButton from "./SlowIconButton";
 
 interface NavbarPropos {}
 
@@ -52,25 +41,31 @@ const Navbar: React.FC<NavbarPropos> = () => {
               Language Reader
             </Typography>
             <Stack direction="row" spacing={2}>
-              <CustomIconButton
-                aria-label="https://github.com/IanConceicao/language-reader"
-                onClick={() =>
-                  window.open("https://github.com/IanConceicao/language-reader")
-                }
-                color="inherit"
-              >
-                <GitHubIcon />
-              </CustomIconButton>
-              <CustomIconButton
-                onClick={colorMode.toggleColorMode}
-                color="inherit"
-              >
-                {theme.palette.mode === "dark" ? (
-                  <LightModeIcon />
-                ) : (
-                  <ModeNightIcon />
-                )}
-              </CustomIconButton>
+              <Tooltip enterDelay={500} title="View this project on GitHub">
+                <CustomIconButton
+                  aria-label="https://github.com/IanConceicao/language-reader"
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/IanConceicao/language-reader"
+                    )
+                  }
+                  color="inherit"
+                >
+                  <GitHubIcon />
+                </CustomIconButton>
+              </Tooltip>
+              <Tooltip enterDelay={500} title="Toggle theme">
+                <CustomIconButton
+                  onClick={colorMode.toggleColorMode}
+                  color="inherit"
+                >
+                  {theme.palette.mode === "dark" ? (
+                    <LightModeIcon />
+                  ) : (
+                    <ModeNightIcon />
+                  )}
+                </CustomIconButton>
+              </Tooltip>
             </Stack>
           </Stack>
         </Toolbar>
