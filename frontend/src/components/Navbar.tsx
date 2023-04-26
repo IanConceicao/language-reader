@@ -1,16 +1,29 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import ModeNightIcon from "@mui/icons-material/ModeNight";
 import {
   AppBar,
-  Box,
   Container,
   IconButton,
+  IconButtonProps,
+  Stack,
+  styled,
   Toolbar,
   Typography,
   useTheme,
 } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext } from "../App";
+
+const CustomIconButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
+  transition: theme.transitions.create(["color", "transform"], {
+    duration: theme.transitions.duration.standard,
+  }),
+  "&:hover": {
+    color: theme.palette.primary.main,
+    backgroundColor: "transparent",
+  },
+}));
 
 interface NavbarPropos {}
 
@@ -21,10 +34,7 @@ const Navbar: React.FC<NavbarPropos> = () => {
     <AppBar position="static" color="transparent" elevation={0}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1 }}>
-            {/* TODO Add icon on the left and dark mode switch on right. Read here about how to add color modes using contexhere
-            https://mui.com/material-ui/customization/dark-mode/
-            */}
+          <Stack direction="row" justifyContent="space-between" width={"100%"}>
             <Typography
               variant="h4"
               noWrap
@@ -32,7 +42,6 @@ const Navbar: React.FC<NavbarPropos> = () => {
               href="/"
               sx={{
                 mr: 2,
-                display: { md: "flex" },
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
@@ -42,14 +51,28 @@ const Navbar: React.FC<NavbarPropos> = () => {
             >
               Language Reader
             </Typography>
-          </Box>
-          <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
-          </IconButton>
+            <Stack direction="row" spacing={2}>
+              <CustomIconButton
+                aria-label="https://github.com/IanConceicao/language-reader"
+                onClick={() =>
+                  window.open("https://github.com/IanConceicao/language-reader")
+                }
+                color="inherit"
+              >
+                <GitHubIcon />
+              </CustomIconButton>
+              <CustomIconButton
+                onClick={colorMode.toggleColorMode}
+                color="inherit"
+              >
+                {theme.palette.mode === "dark" ? (
+                  <LightModeIcon />
+                ) : (
+                  <ModeNightIcon />
+                )}
+              </CustomIconButton>
+            </Stack>
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>

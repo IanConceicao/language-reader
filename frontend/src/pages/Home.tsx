@@ -1,4 +1,5 @@
-import { Grid, Typography } from "@mui/material";
+import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowRightOutlined";
+import { Stack, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import TextBox from "../components/Home/TextBox";
@@ -11,20 +12,19 @@ const Home: React.FC<HomeProps> = () => {
     <>
       <Navbar></Navbar>
       <Container maxWidth="lg" sx={{ mt: 2, mb: 10 }}>
-        <Grid container alignContent="center" spacing={4} direction="column">
-          <Grid item>
+        <Stack alignContent="center" spacing={4} direction="column">
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <KeyboardDoubleArrowRightOutlinedIcon />
             <Typography
               variant="h5"
               className="disable-text-selection"
               fontFamily={"monospace"}
             >
-              ⌨️ Type or copy in text
+              Type or copy in text
             </Typography>
-          </Grid>
-          <Grid item width={"100%"}>
-            <TextBox></TextBox>
-          </Grid>
-        </Grid>
+          </Stack>
+          <TextBox></TextBox>
+        </Stack>
       </Container>
     </>
   );
