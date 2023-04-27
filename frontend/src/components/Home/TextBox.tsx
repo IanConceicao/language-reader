@@ -23,10 +23,10 @@ interface TextBoxProps {}
 const TextBox: React.FC<TextBoxProps> = () => {
   const [text, setText] = useState(localStorage.getItem("text") || "");
   const [inputLanguage, setInputLanguage] = useState(
-    localStorage.getItem("inputLanguage") || "Portuguese"
+    localStorage.getItem("inputLanguage") || supportedLanguages[0]
   );
   const [outputLanguage, setOutputLanguage] = useState(
-    localStorage.getItem("outputLanguage") || "English"
+    localStorage.getItem("outputLanguage") || supportedLanguages[1]
   );
   const [error, setError] = useState(false);
 
@@ -54,6 +54,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
       navigate({
         pathname: "/reader",
+        search: `?inputLanguage=${inputLanguage}&outputLanguage=${outputLanguage}`,
       });
     }
   };

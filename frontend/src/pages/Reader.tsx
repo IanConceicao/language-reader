@@ -1,8 +1,10 @@
 import CreateIcon from "@mui/icons-material/CreateOutlined";
 import { Paper, PopperProps, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SelectionPopover from "../components/Reader/SelectionPopover";
-import { translate } from "../util/ApiCalls";
+import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
+import { detectLanguage, translate } from "../util/ApiCalls";
 
 interface ReaderProps {}
 
@@ -11,8 +13,30 @@ const Reader: React.FC<ReaderProps> = () => {
   const [anchorEl, setAnchorEl] = useState<PopperProps["anchorEl"]>(null);
   const [shouldDisplayPopover, setShouldDisplayPopover] = useState(false);
 
-  const inputLanugage = localStorage.getItem("inputLanguage") || "Portuguese";
-  const outputLanguage = localStorage.getItem("outputLanguage") || "English";
+  const [searchParams] = useSearchParams();
+
+  const [inputLanugage, setInputLanguage] = useState(
+    searchParams.get("inputLanguage") ||
+      localStorage.getItem("inputLanguage") ||
+      "Portuguese"
+  );
+  const [outputLanguage] = useState(
+    searchParams.get("outputLanguage") ||
+      localStorage.getItem("outputLanguage") ||
+      "English"
+  );
+  const [text] = useState(localStorage.getItem("text") || "Hello");
+
+  useEffect(() => {
+    // If input language is on 'detect', then let's detect it and set it
+    const callDetectLanguage = async () => {
+      setInputLanguage(await detectLanguage(text));
+    };
+
+    if (inputLanugage === DETECT_LANGUAGE) {
+      callDetectLanguage();
+    }
+  }, [text, inputLanugage]);
 
   const hideTranslation = () => {
     setShouldDisplayPopover(false);
@@ -97,7 +121,7 @@ const Reader: React.FC<ReaderProps> = () => {
             variant="subtitle1"
             style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
           >
-            {localStorage.getItem("text")}
+            {text}
           </Typography>
           <SelectionPopover
             content={translation}

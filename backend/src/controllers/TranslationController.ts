@@ -10,6 +10,10 @@ interface TranslationPayload {
   text: string;
 }
 
+interface DetectLanguagePayload {
+  text: string;
+}
+
 @injectable()
 export class TranslationController implements RegistrableController {
   @inject(TYPES.TranslationService)
@@ -17,20 +21,37 @@ export class TranslationController implements RegistrableController {
 
   public register(app: Application): void {
     app.route("/translateText").post(this.translateText);
+    app.route("/detectLanguage").post(this.detectLanguage);
   }
 
   private translateText = async (req: Request, res: Response) => {
     const { inputLanguage, outputLanguage, text } =
       req.body as TranslationPayload;
     try {
-      const translated_text = await this.translationService.translateText(
+      const translatedText = await this.translationService.translateText(
         inputLanguage,
         outputLanguage,
         text
       );
-      res.status(200).json({ data: translated_text });
+      res.status(200).json({ data: translatedText });
     } catch (e: any) {
       const errorMsg = `Failed to translate from ${inputLanguage} to ${outputLanguage}. ${e.message}`;
+      console.error(errorMsg);
+      return res.status(500).json({
+        message: errorMsg,
+      });
+    }
+  };
+
+  private detectLanguage = async (req: Request, res: Response) => {
+    const { text } = req.body as DetectLanguagePayload;
+    try {
+      const detectedLanguage = await this.translationService.detectLanguage(
+        text
+      );
+      res.status(200).json({ data: detectedLanguage });
+    } catch (e: any) {
+      const errorMsg = `Failed to detect the language of the text ${text}. ${e.message}`;
       console.error(errorMsg);
       return res.status(500).json({
         message: errorMsg,

@@ -36,6 +36,31 @@ export const translate = async (
   return "";
 };
 
+export const detectLanguage = async (text: string): Promise<string> => {
+  const url = BACKEND_URL + "/detectLanguage/";
+  const body_to_send = {
+    text: text,
+  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body_to_send),
+    });
+    if (response.ok) {
+      const body = await response.json();
+      return body.data;
+    } else {
+      console.error((await response.json()).message);
+    }
+  } catch (e: any) {
+    console.error(e.message);
+  }
+  return "";
+};
+
 export const pingBackend = async (): Promise<Response> => {
   // Ping the backend to wake it in case it is sleeping
   const response = await fetch(BACKEND_URL, {

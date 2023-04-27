@@ -17,7 +17,7 @@ const SwapArrow: React.FC<SwapArrowProps> = ({ currentLanguage, onClick }) => {
       <CustomIconButton
         disabled={true}
         sx={{ m: 0, p: 0, color: color }}
-        disabledColor={color}
+        disabledcolor={color}
       >
         <Icon />
       </CustomIconButton>

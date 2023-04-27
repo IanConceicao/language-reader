@@ -1,16 +1,16 @@
 import { IconButton, IconButtonProps, styled } from "@mui/material";
 
 interface CustomIconProps extends IconButtonProps {
-  disabledColor?: string;
+  disabledcolor?: string;
 }
 
 const CustomIconButton = styled(IconButton)<CustomIconProps>(
-  ({ theme, disabledColor }) => ({
+  ({ theme, disabledcolor }) => ({
     transition: theme.transitions.create(["color", "transform"], {
       duration: theme.transitions.duration.standard,
     }),
     "&.Mui-disabled": {
-      color: disabledColor,
+      color: disabledcolor,
     },
     "&:hover": {
       color: theme.palette.primary.main,

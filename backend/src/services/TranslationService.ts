@@ -9,6 +9,7 @@ export interface TranslationService {
     outputLanguage: string,
     inputText: string
   ): Promise<string>;
+  detectLanguage(text: string): Promise<string>;
 }
 
 @injectable()
@@ -32,11 +33,31 @@ export class TranslationServiceImpl implements TranslationService {
     );
   };
 
+  public detectLanguage = async (text: string): Promise<string> => {
+    const MAX_TEXT_LENGTH = 60; // Arbitrary limit, because not that many characters are needed for language detection,
+    // and we pay per character
+
+    return this.getLanguageFromIso(
+      await this.translationRepository.detectLanguage(
+        text.substring(0, MAX_TEXT_LENGTH)
+      )
+    );
+  };
+
   private getIsoForLanguage = (language: string): string => {
     if (!(language in codes)) {
       throw new Error(`Cannot find ISO-639-1 code for language: ${language}`);
     } else {
       return codes[language];
     }
+  };
+
+  private getLanguageFromIso = (ISOCode: string): string => {
+    for (const language in codes) {
+      if (codes[language] === ISOCode) {
+        return language;
+      }
+    }
+    throw new Error(`Cannot find language for ISO-639-1 code: ${ISOCode}`);
   };
 }
