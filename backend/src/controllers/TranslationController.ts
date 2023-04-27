@@ -22,12 +22,12 @@ export class TranslationController implements RegistrableController {
   private translateText = async (req: Request, res: Response) => {
     const { inputLanguage, outputLanguage, text } =
       req.body as TranslationPayload;
-    const translated_text = await this.translationService.translateText(
-      inputLanguage,
-      outputLanguage,
-      text
-    );
     try {
+      const translated_text = await this.translationService.translateText(
+        inputLanguage,
+        outputLanguage,
+        text
+      );
       res.status(200).json({ data: translated_text });
     } catch (e: any) {
       const errorMsg = `Failed to translate from ${inputLanguage} to ${outputLanguage}. ${e.message}`;

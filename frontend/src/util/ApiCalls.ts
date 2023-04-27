@@ -1,3 +1,5 @@
+import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
+
 const BACKEND_URL =
   process.env.NODE_ENV === "production"
     ? "https://language-reader.herokuapp.com"
@@ -10,7 +12,7 @@ export const translate = async (
 ): Promise<string> => {
   const url = BACKEND_URL + "/translateText/";
   const body_to_send = {
-    inputLanguage: inputLanguage,
+    inputLanguage: inputLanguage === DETECT_LANGUAGE ? null : inputLanguage,
     outputLanguage: outputLanguage,
     text: text,
   };

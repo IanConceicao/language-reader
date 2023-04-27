@@ -1,4 +1,3 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
   Box,
   Button,
@@ -10,29 +9,18 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Tooltip,
-  useTheme,
 } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomIconButton from "../SlowIconButton";
+import {
+  DETECT_LANGUAGE,
+  supportedLanguages,
+} from "../../data/SupportedLanguages";
+import SwapArrow from "./SwapArrow";
 
 interface TextBoxProps {}
 
 const TextBox: React.FC<TextBoxProps> = () => {
-  const theme = useTheme();
-  const supportedLanguages = [
-    "English",
-    "Portuguese",
-    "Spanish",
-    "French",
-    "German",
-    "Chinese",
-    "Hindi",
-    "Japanese",
-    "Russian",
-  ];
-
   const [text, setText] = useState(localStorage.getItem("text") || "");
   const [inputLanguage, setInputLanguage] = useState(
     localStorage.getItem("inputLanguage") || "Portuguese"
@@ -80,7 +68,9 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
     if (e.target.value === outputLanguage) {
       setOutputLanguage(
-        supportedLanguages.filter((elem) => elem !== e.target.value)[0]
+        supportedLanguages.filter(
+          (elem) => elem !== e.target.value && elem !== DETECT_LANGUAGE
+        )[0]
       );
     }
   };
@@ -110,6 +100,14 @@ const TextBox: React.FC<TextBoxProps> = () => {
     setText(val.replaceAll("\n", "\n"));
   };
 
+  const makeTextBoxLabel = (): string => {
+    const language =
+      inputLanguage === DETECT_LANGUAGE
+        ? inputLanguage.toLowerCase()
+        : inputLanguage;
+    return `Text in ${language}`;
+  };
+
   return (
     <React.Fragment>
       <Paper elevation={2} sx={{ padding: 2 }}>
@@ -119,7 +117,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
               <TextField
                 id="input-text"
                 onChange={setTextHelper}
-                label={inputLanguage}
+                label={makeTextBoxLabel()}
                 variant="outlined"
                 multiline
                 minRows={8}
@@ -166,11 +164,10 @@ const TextBox: React.FC<TextBoxProps> = () => {
             </FormControl>
           </Grid>
           <Grid item>
-            <Tooltip enterDelay={500} title="Swap the languages">
-              <CustomIconButton onClick={swapLanguages}>
-                <ArrowForwardIcon></ArrowForwardIcon>
-              </CustomIconButton>
-            </Tooltip>
+            <SwapArrow
+              currentLanguage={inputLanguage}
+              onClick={swapLanguages}
+            />
           </Grid>
           <Grid item>
             <FormControl
@@ -187,7 +184,9 @@ const TextBox: React.FC<TextBoxProps> = () => {
                 MenuProps={MenuProps}
               >
                 {supportedLanguages
-                  .filter((elem) => elem !== inputLanguage)
+                  .filter(
+                    (elem) => elem !== inputLanguage && elem !== DETECT_LANGUAGE
+                  )
                   .map((language) => (
                     <MenuItem value={language} key={language}>
                       {language}
