@@ -22,6 +22,7 @@
 - ✅ Supports most common languages
 - ✅ Dark Mode
 - ✅ Auto-detect input language
+- 🔲 Provide some default texts for the user to demo the site with
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Support other input types, like scanning a book
 - 🔲 Mobile Friendly

@@ -109,7 +109,7 @@ const Reader: React.FC<ReaderProps> = () => {
         <Stack alignItems="center" direction="row" spacing={2}>
           <CreateIcon />
           <Typography
-            variant="h5"
+            variant="h6"
             className="disable-text-selection"
             fontFamily={"monospace"}
           >

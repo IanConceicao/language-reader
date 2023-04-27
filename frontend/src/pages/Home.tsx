@@ -12,11 +12,11 @@ const Home: React.FC<HomeProps> = () => {
         <Stack alignItems="center" direction="row" spacing={2}>
           <KeyboardDoubleArrowRightOutlinedIcon />
           <Typography
-            variant="h5"
+            variant="h6"
             className="disable-text-selection"
             fontFamily={"monospace"}
           >
-            Type or copy in text
+            Type or paste your text below
           </Typography>
         </Stack>
         <TextBox></TextBox>
