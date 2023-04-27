@@ -1,13 +1,6 @@
 import CreateIcon from "@mui/icons-material/CreateOutlined";
-import {
-  Container,
-  Paper,
-  PopperProps,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Paper, PopperProps, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { translate } from "../util/ApiCalls";
 
@@ -87,38 +80,33 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <>
-      <Navbar></Navbar>
-      <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
-        <Container maxWidth="lg" sx={{ mt: 1, mb: 10 }}>
-          <Stack direction="column" spacing={4}>
-            <Stack alignItems="center" direction="row" spacing={2}>
-              <CreateIcon />
-              <Typography
-                variant="h5"
-                className="disable-text-selection"
-                fontFamily={"monospace"}
-              >
-                Highlight any words or sentences for a translation
-              </Typography>
-            </Stack>
-            <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
-              <Typography
-                variant="subtitle1"
-                style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-              >
-                {localStorage.getItem("text")}
-              </Typography>
-              <SelectionPopover
-                content={translation}
-                anchorEl={anchorEl}
-                display={shouldDisplayPopover}
-              />
-            </Paper>
-          </Stack>
-        </Container>
-      </div>
-    </>
+    <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
+      <Stack direction="column" spacing={4}>
+        <Stack alignItems="center" direction="row" spacing={2}>
+          <CreateIcon />
+          <Typography
+            variant="h5"
+            className="disable-text-selection"
+            fontFamily={"monospace"}
+          >
+            Highlight any words or sentences for a translation
+          </Typography>
+        </Stack>
+        <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
+          <Typography
+            variant="subtitle1"
+            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+          >
+            {localStorage.getItem("text")}
+          </Typography>
+          <SelectionPopover
+            content={translation}
+            anchorEl={anchorEl}
+            display={shouldDisplayPopover}
+          />
+        </Paper>
+      </Stack>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ import {
   SelectChangeEvent,
   TextField,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ import CustomIconButton from "../SlowIconButton";
 interface TextBoxProps {}
 
 const TextBox: React.FC<TextBoxProps> = () => {
+  const theme = useTheme();
   const supportedLanguages = [
     "English",
     "Portuguese",

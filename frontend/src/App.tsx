@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import {
+  Container,
   createTheme,
   CssBaseline,
   ThemeOptions,
@@ -16,6 +17,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import Navbar from "./components/Navbar";
 import { pingBackend } from "./util/ApiCalls";
 
 // Instructions on how to incorporate light and dark here: https://stackoverflow.com/questions/59145165/change-root-background-color-with-material-ui-theme
@@ -91,13 +93,16 @@ const App: React.FC = () => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/reader" element={<Reader />}></Route>
-            <Route path="*" element={<Lost />}></Route>
-          </Routes>
-        </BrowserRouter>
+        <Navbar />
+        <Container maxWidth="lg" sx={{ mt: 1, mb: 10 }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/reader" element={<Reader />}></Route>
+              <Route path="*" element={<Lost />}></Route>
+            </Routes>
+          </BrowserRouter>
+        </Container>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
