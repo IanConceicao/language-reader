@@ -24,12 +24,11 @@ const Navbar: React.FC<NavbarPropos> = () => {
         component="a"
         href="/"
         lineHeight={1}
+        fontFamily={"courier, monospace"}
+        letterSpacing={"0.3rem"}
+        fontWeight={700}
+        color="inherit"
         sx={{
-          mr: 2,
-          fontFamily: "monospace",
-          fontWeight: 700,
-          letterSpacing: ".3rem",
-          color: "inherit",
           textDecoration: "none",
         }}
       >

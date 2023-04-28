@@ -115,7 +115,7 @@ const Reader: React.FC<ReaderProps> = () => {
         <Typography
           variant="h6"
           className="disable-text-selection"
-          fontFamily={"monospace"}
+          fontFamily={"courier, monospace"}
           lineHeight={1.1}
         >
           Highlight any words or sentences for a translation
