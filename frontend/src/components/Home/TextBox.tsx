@@ -111,7 +111,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
   return (
     <React.Fragment>
-      <Paper elevation={2} sx={{ padding: 2 }}>
+      <Paper elevation={1} sx={{ padding: 2 }}>
         <Grid container alignItems="center" justifyContent="center" spacing={2}>
           <Grid item xs={12}>
             <Box component="form" noValidate autoComplete="off">

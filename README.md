@@ -1,18 +1,19 @@
 <div align='center'>
-  
-<h1 style="border-bottom: none">Language Reader</h1>
-
-<p>Explore the language learning tool at: <a href="https://languagereader.ianconceicao.com">LanguageReader.IanConceicao.com</a></p>
 
 <a href="https://languagereader.ianconceicao.com">
-<img width="300" src="logo-fullsize.png">
+<img width="500" src="assets/logo-text.png">
+
+<a href="https://languagereader.ianconceicao.com">
+<img width="200" src="assets/logo-fullsize.png">
 </a>
+
+<p>Explore the language learning tool at: <a href="https://languagereader.ianconceicao.com">LanguageReader.IanConceicao.com</a></p>
 
 </div>
 
 ## Motivation
 
-<p>The Language Reader web app is a tool to help people learn languages by reading. The goal is to offer a reading platform that makes reading a foreign text as conducive to learning as possible.<p>
+<p>Language Reader is a platform to read text in a foreign language. Simply paste in your text, and provide a 'helper' language (default English), and click 'Read'. From there, you can highlight any piece of text to get an automatic translation into the helper language. Pro tip: double click a word to just translate that word. <p>
 
 ## 🚧 🏗️ Features
 

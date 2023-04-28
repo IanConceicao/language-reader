@@ -121,7 +121,7 @@ const Reader: React.FC<ReaderProps> = () => {
           Highlight any words or sentences for a translation
         </Typography>
       </Stack>
-      <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
+      <Paper elevation={1} sx={{ p: 2, minHeight: "50vh" }}>
         <Typography
           variant="subtitle1"
           style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
