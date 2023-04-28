@@ -104,33 +104,37 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <div onMouseDown={hideTranslation} onMouseUp={updateTranslation}>
-      <Stack direction="column" spacing={4}>
-        <Stack alignItems="center" direction="row" spacing={2}>
-          <CreateIcon />
-          <Typography
-            variant="h6"
-            className="disable-text-selection"
-            fontFamily={"monospace"}
-          >
-            Highlight any words or sentences for a translation
-          </Typography>
-        </Stack>
-        <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
-          <Typography
-            variant="subtitle1"
-            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-          >
-            {text}
-          </Typography>
-          <SelectionPopover
-            content={translation}
-            anchorEl={anchorEl}
-            display={shouldDisplayPopover}
-          />
-        </Paper>
+    <Stack
+      direction="column"
+      spacing={3}
+      onMouseDown={hideTranslation}
+      onMouseUp={updateTranslation}
+    >
+      <Stack alignItems="center" direction="row" spacing={2}>
+        <CreateIcon />
+        <Typography
+          variant="h6"
+          className="disable-text-selection"
+          fontFamily={"monospace"}
+          lineHeight={1.1}
+        >
+          Highlight any words or sentences for a translation
+        </Typography>
       </Stack>
-    </div>
+      <Paper elevation={2} sx={{ p: 2, minHeight: "50vh" }}>
+        <Typography
+          variant="subtitle1"
+          style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+        >
+          {text}
+        </Typography>
+        <SelectionPopover
+          content={translation}
+          anchorEl={anchorEl}
+          display={shouldDisplayPopover}
+        />
+      </Paper>
+    </Stack>
   );
 };
 

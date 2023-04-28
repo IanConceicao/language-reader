@@ -36,6 +36,7 @@ export const translate = async (
   return "";
 };
 
+// TODO: Important! Need to handle the case and prompt the user when the server is sleeping and they need to wait a bit
 export const detectLanguage = async (text: string): Promise<string> => {
   const url = BACKEND_URL + "/detectLanguage/";
   const body_to_send = {

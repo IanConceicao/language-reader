@@ -20,9 +20,6 @@ import "@fontsource/roboto/700.css";
 import Navbar from "./components/Navbar";
 import { pingBackend } from "./util/ApiCalls";
 
-// Instructions on how to incorporate light and dark here: https://stackoverflow.com/questions/59145165/change-root-background-color-with-material-ui-theme
-// More instructions: https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
-
 const sharedTheme: ThemeOptions = { shape: { borderRadius: 12 } };
 
 const lightTheme = createTheme({
@@ -93,8 +90,8 @@ const App: React.FC = () => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar />
-        <Container maxWidth="lg" sx={{ mt: 1, mb: 10 }}>
+        <Container maxWidth="md" sx={{ mb: 10 }}>
+          <Navbar />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />}></Route>
