@@ -14,6 +14,7 @@ const Home: React.FC<HomeProps> = () => {
           variant="h6"
           className="disable-text-selection"
           fontFamily={"monospace"}
+          lineHeight={1.1}
         >
           Type or paste your text below
         </Typography>

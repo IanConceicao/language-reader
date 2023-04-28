@@ -27,6 +27,7 @@ const lightTheme = createTheme({
   palette: {
     background: {
       default: "#f6f8fc",
+      paper: "#fafafa",
     },
     primary: {
       main: "#03A9F4",
