@@ -2,18 +2,21 @@
 
 <a href="https://languagereader.ianconceicao.com">
 <img width="500" src="assets/logo-text.png">
+<br>
+<br>
+<img width="800" src="assets/home-page.png">
 
-<a href="https://languagereader.ianconceicao.com">
-<img width="200" src="assets/logo-fullsize.png">
 </a>
-
-<p>Explore the language learning tool at: <a href="https://languagereader.ianconceicao.com">LanguageReader.IanConceicao.com</a></p>
+<a href="https://languagereader.ianconceicao.com">languagereader.ianconceicao.com</a>
+<p>check it out ☝️&nbsp; </p>
 
 </div>
 
 ## Motivation
 
 <p>Language Reader is a platform to read text in a foreign language. Simply paste in your text, and provide a 'helper' language (default English), and click 'Read'. From there, you can highlight any piece of text to get an automatic translation into the helper language. Pro tip: double click a word to just translate that word. <p>
+
+<img width="800" src="assets/select-phrase-shadow.png">
 
 ## 🚧 🏗️ Features
 
@@ -27,6 +30,8 @@
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Support other input types, like scanning a book
 - 🔲 Mobile Friendly
+
+<img width="800" src="assets/select-word-dark-shadow.png">
 
 ## Tech Stack
 
