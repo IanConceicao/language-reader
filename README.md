@@ -1,10 +1,10 @@
 <div align='center'>
-
+<br>
 <a href="https://languagereader.ianconceicao.com">
 <img width="500" src="assets/logo-text.png">
 <br>
 <br>
-<img width="800" src="assets/home-page.png">
+<img width="740" src="assets/home-page.png">
 
 </a>
 <a href="https://languagereader.ianconceicao.com">languagereader.ianconceicao.com</a>
@@ -26,6 +26,7 @@
 - ✅ Supports most common languages
 - ✅ Dark Mode
 - ✅ Auto-detect input language
+- 🔲 Create multiple choice quiz based on the text
 - 🔲 Provide some default texts for the user to demo the site with
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Support other input types, like scanning a book
