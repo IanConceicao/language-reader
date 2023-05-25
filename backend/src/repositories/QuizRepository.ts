@@ -17,7 +17,7 @@ export class QuizRepositoryChatGPT implements QuizRepository {
   public async createQuiz(language: string, text: string): Promise<string> {
     try {
       const prompt = dedent`
-        Read the article below and create a quiz with 4 questions and 4 answers per question. The article is in ${language}, so also write the quiz in ${language}. Return the quiz in JSON as a list of Questions, where a Question is defined as:
+        Read the article below and create a multiple choice quiz in JSON format with 4 questions and 4 answer choices per question. Make each question only have 1 right answer, and randomize the order of the correct answers. The article is in ${language}, so also write the quiz in ${language}. Return the quiz in JSON as a list of Questions, where a Question is defined as:
 
         interface Question {
         prompt: string;
@@ -26,15 +26,21 @@ export class QuizRepositoryChatGPT implements QuizRepository {
         answerExplanation: string;
         }
       
-        Article: 
+        The article:
+
         ${text}
         `;
-
+      console.log(`----\nSending this prompt to ChatGPT\n${prompt}\n----`);
       const theResponse = await this.openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
       });
-      return theResponse.data.choices[0].message.content;
+      const message = theResponse.data.choices[0].message.content as string;
+      const onlyArrayPortion = message.substring(
+        message.indexOf("["),
+        message.lastIndexOf("]") + 1
+      );
+      return onlyArrayPortion;
     } catch (e: any) {
       const errorMsg = e.response
         ? JSON.stringify(e.response.data.error.message)
