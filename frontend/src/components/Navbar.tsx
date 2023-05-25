@@ -18,6 +18,7 @@ const Navbar: React.FC<NavbarPropos> = () => {
       sx={{ justifyContent: "space-between" }}
       pt={1}
       pb={2}
+      mb={1}
     >
       <Typography
         variant="h4"

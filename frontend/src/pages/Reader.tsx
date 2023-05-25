@@ -143,7 +143,7 @@ const Reader: React.FC<ReaderProps> = () => {
             </Typography>
           </Stack>
         </Stack>
-        <Paper elevation={1} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
+        <Paper elevation={2} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
           <Typography
             variant="subtitle1"
             style={{ whiteSpace: "pre-wrap", display: "inline-block" }}

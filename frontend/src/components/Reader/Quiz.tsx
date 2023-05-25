@@ -1,6 +1,8 @@
-import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
+import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
 import { Box, Stack, useTheme } from "@mui/material";
 import Fab from "@mui/material/Fab";
+import { useState } from "react";
+import QuizLoader from "./QuizLoader";
 
 interface QuizProps {
   text: string;
@@ -11,14 +13,16 @@ interface QuizProps {
 const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
   const { text, inputLanguage, outputLanguage } = props;
   const theme = useTheme();
+  const [showQuiz, setShowQuiz] = useState(false);
   return (
-    <Stack direction="row" justifyContent="center">
+    <Stack direction="column" alignItems="center" spacing={3}>
       <Box sx={{ backgroundColor: theme.palette.background.paper }}>
         <Fab variant="extended" sx={{ boxShadow: 3 }}>
-          <HelpOutlinedIcon sx={{ mr: 2 }} />
-          Generate a quiz
+          <QuizOutlinedIcon sx={{ mr: 2 }} />
+          Take a quiz
         </Fab>
       </Box>
+      <QuizLoader />
     </Stack>
   );
 };
