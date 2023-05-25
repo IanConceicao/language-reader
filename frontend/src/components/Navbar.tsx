@@ -31,6 +31,7 @@ const Navbar: React.FC<NavbarPropos> = () => {
         sx={{
           textDecoration: "none",
         }}
+        maxWidth={"66%"}
       >
         Language Reader
       </Typography>

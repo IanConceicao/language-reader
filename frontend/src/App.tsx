@@ -40,6 +40,15 @@ const lightTheme = createTheme({
       dark: "#C62828",
     },
   },
+  components: {
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#fafafa",
+        },
+      },
+    },
+  },
 });
 
 const darkTheme = createTheme({

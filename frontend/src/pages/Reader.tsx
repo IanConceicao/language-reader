@@ -1,7 +1,15 @@
 import CreateIcon from "@mui/icons-material/CreateOutlined";
-import { Paper, PopperProps, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
+import {
+  ClickAwayListener,
+  Paper,
+  PopperProps,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Quiz from "../components/Reader/Quiz";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
 import { detectLanguage, translate } from "../util/ApiCalls";
@@ -103,51 +111,58 @@ const Reader: React.FC<ReaderProps> = () => {
     setShouldDisplayPopover(true);
   };
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleGlobalClick(): void {
-      hideTranslation();
-    }
-    document.addEventListener("mousedown", handleGlobalClick);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleGlobalClick);
-    };
-  });
-
   return (
-    <Stack
-      direction="column"
-      spacing={3}
-      onMouseUp={updateTranslation}
-      ref={wrapperRef}
-    >
-      <Stack alignItems="center" direction="row" spacing={2}>
-        <CreateIcon />
-        <Typography
-          variant="h6"
-          className="disable-text-selection"
-          fontFamily={"courier, monospace"}
-          lineHeight={1.1}
-        >
-          Highlight any words or sentences for a translation
-        </Typography>
-      </Stack>
-      <Paper elevation={1} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
-        <Typography
-          variant="subtitle1"
-          style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
-        >
-          {text}
-        </Typography>
-        <SelectionPopover
-          content={translation}
-          anchorEl={anchorEl}
-          display={shouldDisplayPopover}
+    <ClickAwayListener onClickAway={hideTranslation}>
+      <Stack
+        direction="column"
+        spacing={3}
+        onMouseUp={updateTranslation}
+        onMouseDown={hideTranslation}
+      >
+        <Stack direction="column" spacing={1.5}>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <CreateIcon />
+            <Typography
+              variant="h6"
+              className="disable-text-selection"
+              fontFamily={"courier, monospace"}
+              lineHeight={1.1}
+            >
+              Highlight any words or sentences for a translation
+            </Typography>
+          </Stack>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <QuizOutlinedIcon />
+            <Typography
+              variant="h6"
+              className="disable-text-selection"
+              fontFamily={"courier, monospace"}
+              lineHeight={1.1}
+            >
+              Take a quiz on this text at the end
+            </Typography>
+          </Stack>
+        </Stack>
+        <Paper elevation={1} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
+          <Typography
+            variant="subtitle1"
+            style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
+          >
+            {text}
+          </Typography>
+          <SelectionPopover
+            content={translation}
+            anchorEl={anchorEl}
+            display={shouldDisplayPopover}
+          />
+        </Paper>
+        <Quiz
+          text={text}
+          inputLanguage={inputLanugage}
+          outputLanguage={outputLanguage}
         />
-      </Paper>
-    </Stack>
+      </Stack>
+    </ClickAwayListener>
   );
 };
 
