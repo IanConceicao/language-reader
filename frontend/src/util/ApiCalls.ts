@@ -1,4 +1,5 @@
 import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
+import Question from "./types/Question";
 
 const BACKEND_URL =
   process.env.NODE_ENV === "production"
@@ -71,4 +72,37 @@ export const pingBackend = async (): Promise<Response> => {
     },
   });
   return response;
+};
+
+export const translateAndCreateQuiz = async (
+  inputLanguage: string,
+  outputLanguage: string,
+  text: string,
+  mock?: boolean
+): Promise<Question[]> => {
+  const url = BACKEND_URL + "/translateAndCreateQuiz/";
+  const body_to_send = {
+    inputLanguage: inputLanguage === DETECT_LANGUAGE ? null : inputLanguage,
+    outputLanguage: outputLanguage,
+    text: text,
+    mock: mock ? mock : null,
+  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body_to_send),
+    });
+    if (response.ok) {
+      const body = await response.json();
+      return body.data;
+    } else {
+      console.error((await response.json()).message);
+    }
+  } catch (e: any) {
+    console.error(e.message);
+  }
+  return [];
 };

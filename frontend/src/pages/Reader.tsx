@@ -1,6 +1,6 @@
 import CreateIcon from "@mui/icons-material/CreateOutlined";
 import { Paper, PopperProps, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SelectionPopover from "../components/Reader/SelectionPopover";
 import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
@@ -58,7 +58,7 @@ const Reader: React.FC<ReaderProps> = () => {
       !selection.toString().trim() || // Blank text
       selection.rangeCount === 0
     ) {
-      return null;
+      return;
     }
 
     let range: Range;
@@ -66,7 +66,7 @@ const Reader: React.FC<ReaderProps> = () => {
       // Avoid strange bug where range changes later
       range = selection.getRangeAt(0);
     } catch (e) {
-      return null;
+      return;
     }
 
     const getBoundingClientRect = () => {
@@ -103,12 +103,25 @@ const Reader: React.FC<ReaderProps> = () => {
     setShouldDisplayPopover(true);
   };
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleGlobalClick(): void {
+      hideTranslation();
+    }
+    document.addEventListener("mousedown", handleGlobalClick);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleGlobalClick);
+    };
+  });
+
   return (
     <Stack
       direction="column"
       spacing={3}
-      onMouseDown={hideTranslation}
       onMouseUp={updateTranslation}
+      ref={wrapperRef}
     >
       <Stack alignItems="center" direction="row" spacing={2}>
         <CreateIcon />
@@ -121,7 +134,7 @@ const Reader: React.FC<ReaderProps> = () => {
           Highlight any words or sentences for a translation
         </Typography>
       </Stack>
-      <Paper elevation={1} sx={{ p: 2, minHeight: "50vh" }}>
+      <Paper elevation={1} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
         <Typography
           variant="subtitle1"
           style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
