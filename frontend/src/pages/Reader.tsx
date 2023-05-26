@@ -112,38 +112,38 @@ const Reader: React.FC<ReaderProps> = () => {
   };
 
   return (
-    <Stack direction="column" spacing={3}>
-      <Stack direction="column" spacing={1.5}>
-        <Stack alignItems="center" direction="row" spacing={2}>
-          <CreateIcon />
-          <Typography
-            variant="h6"
-            className="disable-text-selection"
-            fontFamily={"courier, monospace"}
-            lineHeight={1.1}
-          >
-            Highlight any words or sentences for a translation
-          </Typography>
+    <ClickAwayListener onClickAway={hideTranslation}>
+      <Stack
+        direction="column"
+        spacing={3}
+        onMouseUp={updateTranslation}
+        onMouseDown={hideTranslation}
+      >
+        <Stack direction="column" spacing={1.5}>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <CreateIcon />
+            <Typography
+              variant="h6"
+              className="disable-text-selection"
+              fontFamily={"courier, monospace"}
+              lineHeight={1.1}
+            >
+              Highlight any words or sentences for a translation
+            </Typography>
+          </Stack>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <QuizOutlinedIcon />
+            <Typography
+              variant="h6"
+              className="disable-text-selection"
+              fontFamily={"courier, monospace"}
+              lineHeight={1.1}
+            >
+              Take a quiz on this text at the end
+            </Typography>
+          </Stack>
         </Stack>
-        <Stack alignItems="center" direction="row" spacing={2}>
-          <QuizOutlinedIcon />
-          <Typography
-            variant="h6"
-            className="disable-text-selection"
-            fontFamily={"courier, monospace"}
-            lineHeight={1.1}
-          >
-            Take a quiz on this text at the end
-          </Typography>
-        </Stack>
-      </Stack>
-      <ClickAwayListener onClickAway={hideTranslation}>
-        <Paper
-          elevation={2}
-          sx={{ py: 2, px: 3, minHeight: "50vh" }}
-          onMouseUp={updateTranslation}
-          onMouseDown={hideTranslation}
-        >
+        <Paper elevation={2} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
           <Typography
             variant="subtitle1"
             style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
@@ -156,14 +156,13 @@ const Reader: React.FC<ReaderProps> = () => {
             display={shouldDisplayPopover}
           />
         </Paper>
-      </ClickAwayListener>
-
-      <Quiz
-        text={text}
-        inputLanguage={inputLanugage}
-        outputLanguage={outputLanguage}
-      />
-    </Stack>
+        <Quiz
+          text={text}
+          inputLanguage={inputLanugage}
+          outputLanguage={outputLanguage}
+        />
+      </Stack>
+    </ClickAwayListener>
   );
 };
 
