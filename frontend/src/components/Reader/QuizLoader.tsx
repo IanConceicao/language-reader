@@ -9,10 +9,10 @@ const QuizLoader: React.FC<QuizLoaderProps> = (props: QuizLoaderProps) => {
           Generating your quiz
         </Typography>
         <Typography variant="body1" textAlign="center">
-          Language Reader in real time uses OpenAI's state of the art GPT-3
-          model to generate a quiz from the text and may take up to 40 seconds.
-          Due to the nature of large language models and flucations in demand
-          the wait times and quality of the quizzes may vary.
+          Language Reader in real time uses OpenAI's state of the art GPT-3.5
+          language model to generate a quiz from the text. This may take up to a
+          minute depending on text size due to the nature of large language
+          models and spikes in demand.
         </Typography>
         <LinearProgress />
       </Stack>
