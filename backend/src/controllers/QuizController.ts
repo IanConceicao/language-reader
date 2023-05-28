@@ -18,6 +18,8 @@ interface translateAndCreateQuiz {
 
 @injectable()
 export class QuizController implements RegistrableController {
+  private static MAX_NUMBER_OF_WORDS = 1200;
+
   @inject(TYPES.QuizService)
   private quizService!: QuizService;
 
@@ -26,11 +28,22 @@ export class QuizController implements RegistrableController {
     app.route("/translateAndCreateQuiz").post(this.translateAndCreateQuiz);
   }
 
+  private isTooManyWords = (text: string): boolean =>
+    text.split(" ").filter((word) => word !== "").length >
+    QuizController.MAX_NUMBER_OF_WORDS;
+
   private createQuiz = async (req: Request, res: Response) => {
     const { language, text } = req.body as CreateQuizPayload;
+    if (this.isTooManyWords(text)) {
+      return res
+        .status(400)
+        .send(
+          `Text must be less than ${QuizController.MAX_NUMBER_OF_WORDS} words.`
+        );
+    }
     try {
       const quiz = await this.quizService.createQuiz(language, text);
-      res.status(200).json({ data: quiz });
+      return res.status(200).json({ data: quiz });
     } catch (e: any) {
       const errorMsg = `Failed to make a quiz in ${language}:\n${e.message}`;
       console.error(errorMsg);
@@ -43,6 +56,13 @@ export class QuizController implements RegistrableController {
   private translateAndCreateQuiz = async (req: Request, res: Response) => {
     const { inputLanguage, outputLanguage, text, mock } =
       req.body as translateAndCreateQuiz;
+    if (this.isTooManyWords(text)) {
+      return res
+        .status(400)
+        .send(
+          `Text must be less than ${QuizController.MAX_NUMBER_OF_WORDS} words.`
+        );
+    }
     try {
       const quiz = await this.quizService.translateAndCreateQuiz(
         inputLanguage,
@@ -50,7 +70,7 @@ export class QuizController implements RegistrableController {
         text,
         mock
       );
-      res.status(200).json({ data: quiz });
+      return res.status(200).json({ data: quiz });
     } catch (e: any) {
       const errorMsg = `Failed to translate from ${inputLanguage} and make a quiz in ${outputLanguage}:\n${e.message}`;
       console.error(errorMsg);

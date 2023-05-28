@@ -34,6 +34,7 @@ export class QuizServiceImpl implements QuizService {
     text: string
   ): Promise<Question[]> => {
     const quizString = await this.quizRepository.createQuiz(language, text);
+
     try {
       return JSON.parse(quizString) as Question[];
     } catch (error: any) {
