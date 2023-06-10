@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import {
   DETECT_LANGUAGE,
   supportedLanguages,
-} from "../../data/supportedLanguages";
+} from "../../pages/util/data/supportedLanguages";
 import SwapArrow from "./swapArrow";
 import { useSearchParams } from "next/navigation";
 
@@ -52,7 +52,8 @@ const TextBox: React.FC<TextBoxProps> = () => {
     };
 
     setInitialTextAndLanguages();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const router = useRouter();
 

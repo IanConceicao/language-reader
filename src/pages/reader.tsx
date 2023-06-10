@@ -10,12 +10,14 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Quiz from "@/components/Reader/Quiz";
 import SelectionPopover from "@/components/Reader/SelectionPopover";
-import { DETECT_LANGUAGE, supportedLanguages } from "@/data/supportedLanguages";
-import { detectLanguage, translate } from "../util/apiCalls";
+import {
+  DETECT_LANGUAGE,
+  supportedLanguages,
+} from "@/pages/util/data/supportedLanguages";
 import type { NextPage } from "next";
 import { useSearchParams } from "next/navigation";
-
-interface ReaderProps {}
+import { DetectLanguageResponse } from "./api/detect-language";
+import { TranslationLanguageResponse } from "./api/translate";
 
 const Reader: NextPage = () => {
   const [translation, setTranslation] = useState("");
@@ -24,11 +26,14 @@ const Reader: NextPage = () => {
 
   const searchParams = useSearchParams();
 
-  const [inputLanugage, setInputLanguage] = useState(supportedLanguages[0]);
+  const [inputLanguage, setInputLanguage] = useState(supportedLanguages[0]);
   const [outputLanguage, setOutputLanguage] = useState(supportedLanguages[1]);
   const [text, setText] = useState("");
 
+  const [triedToDetectLang, setTriedToDetectLang] = useState(false);
+
   useEffect(() => {
+    // On client first render, initialize everything
     const setInitialTextAndLanguages = () => {
       setInputLanguage(
         searchParams.get("inputLanguage") ||
@@ -46,18 +51,30 @@ const Reader: NextPage = () => {
     };
 
     setInitialTextAndLanguages();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // If input language is on 'detect', then let's detect it and set it
     const callDetectLanguage = async () => {
-      setInputLanguage(await detectLanguage(text));
+      const res = await fetch("/api/detect-language", {
+        method: "POST",
+        body: JSON.stringify({ text: text }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = (await res.json()) as DetectLanguageResponse;
+      console.log("Data on detect language is", data);
+      setInputLanguage(data.language);
+      sessionStorage.setItem("inputLanguage", data.language);
     };
 
-    if (inputLanugage === DETECT_LANGUAGE) {
+    if (!triedToDetectLang && text && inputLanguage === DETECT_LANGUAGE) {
+      setTriedToDetectLang(true);
       callDetectLanguage();
     }
-  }, [text, inputLanugage]);
+  }, [text, inputLanguage, triedToDetectLang]);
 
   const hideTranslation = () => {
     setShouldDisplayPopover(false);
@@ -115,12 +132,20 @@ const Reader: NextPage = () => {
 
     setAnchorEl({ getBoundingClientRect });
 
-    const translation = await translate(
-      inputLanugage,
-      outputLanguage,
-      selection.toString().trim()
-    );
-    setTranslation(translation);
+    const res = await fetch("/api/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        inputLanguage: inputLanguage,
+        outputLanguage: outputLanguage,
+        text: selection.toString().trim(),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = (await res.json()) as TranslationLanguageResponse;
+
+    setTranslation(data.translation);
     setShouldDisplayPopover(true);
   };
 
@@ -173,7 +198,7 @@ const Reader: NextPage = () => {
 
       <Quiz
         text={text}
-        inputLanguage={inputLanugage}
+        inputLanguage={inputLanguage}
         outputLanguage={outputLanguage}
       />
     </Stack>

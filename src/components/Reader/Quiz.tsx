@@ -3,11 +3,10 @@ import { Box, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Fab from "@mui/material/Fab";
 import { useRef, useState } from "react";
-import { translateAndCreateQuiz } from "@/util/apiCalls";
-import Question from "../../util/types/Question";
 import QuestionPrompt from "./QuestionPrompt";
 import QuizFailedLoad from "./QuizFailedLoad";
 import QuizLoader from "./QuizLoader";
+import Question from "@/pages/util/types/Question";
 
 interface QuizProps {
   text: string;
@@ -29,11 +28,13 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
     setDisableQuizButton(true);
     setShowPlaceHolder(true);
     scrollToQuiz();
-    const questionReturn: Question[] | null = await translateAndCreateQuiz(
-      inputLanguage,
-      outputLanguage,
-      text
-    );
+    const questionReturn: Question[] | null = []; // TODO: Change here
+
+    // await translateAndCreateQuiz(
+    //   inputLanguage,
+    //   outputLanguage,
+    //   text
+    // );
     if (questionReturn !== null) {
       setQuestions(questionReturn);
     } else {
