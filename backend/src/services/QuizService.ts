@@ -51,7 +51,7 @@ export class QuizServiceImpl implements QuizService {
     mock: boolean | null
   ): Promise<Question[]> => {
     if (mock) {
-      await new Promise((r) => setTimeout(r, 8000)); // Mimic API call delay
+      await new Promise((r) => setTimeout(r, 4000)); // Mimic API call delay
       return exampleQuiz;
     } else {
       const translatedText = await this.translationService.translateText(

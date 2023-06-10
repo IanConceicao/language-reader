@@ -79,7 +79,7 @@ export const translateAndCreateQuiz = async (
   outputLanguage: string,
   text: string,
   mock?: boolean
-): Promise<Question[]> => {
+): Promise<Question[] | null> => {
   const url = BACKEND_URL + "/translateAndCreateQuiz/";
   const body_to_send = {
     inputLanguage: inputLanguage === DETECT_LANGUAGE ? null : inputLanguage,
@@ -104,5 +104,5 @@ export const translateAndCreateQuiz = async (
   } catch (e: any) {
     console.error(e.message);
   }
-  return [];
+  return null;
 };
