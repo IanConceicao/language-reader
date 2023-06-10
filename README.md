@@ -1,42 +1,38 @@
-<div align='center'>
-<br>
-<a href="https://languagereader.ianconceicao.com">
-<img width="500" src="assets/logo-text.png">
-<br>
-<br>
-<img width="740" src="assets/home-page.png">
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-</a>
-<a href="https://languagereader.ianconceicao.com">languagereader.ianconceicao.com</a>
-<p>check it out ☝️&nbsp; </p>
+## Getting Started
 
-</div>
+First, run the development server:
 
-## Motivation
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
-<p>Language Reader is a platform to read text in a foreign language. Simply paste in your text, and provide a 'helper' language (default English), and click 'Read'. From there, you can highlight any piece of text to get an automatic translation into the helper language. Pro tip: double click a word to just translate that word. <p>
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-<img width="800" src="assets/select-phrase-shadow.png">
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-## 🚧 🏗️ Features
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-<p>This site is a work in progress, there is still much more to come. <p>
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-- ✅ Highlight any piece of text to translate it
-- ✅ Supports most common languages
-- ✅ Dark Mode
-- ✅ Auto-detect input language
-- 🔲 Create multiple choice quiz based on the text
-- 🔲 Provide some default texts for the user to demo the site with
-- 🔲 Text to speech for word and sentence pronounciation
-- 🔲 Support other input types, like scanning a book
-- 🔲 Mobile Friendly
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-<img width="800" src="assets/select-word-dark-shadow.png">
+## Learn More
 
-## Tech Stack
+To learn more about Next.js, take a look at the following resources:
 
-- **Fronted:** React.js + Material UI
-- **Server:** Node.js + Express
-- **Langauge API:** Google Cloud Translate
-- **Continuous Deployment:** Netlify for the frontend, Heroku for the backend
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
