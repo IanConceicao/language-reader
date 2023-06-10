@@ -1,8 +1,8 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Tooltip } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { DETECT_LANGUAGE } from "../../data/SupportedLanguages";
-import CustomIconButton from "../SlowIconButton";
+import { DETECT_LANGUAGE } from "../../data/supportedLanguages";
+import CustomIconButton from "../slowIconButton";
 
 interface SwapArrowProps {
   currentLanguage: String;

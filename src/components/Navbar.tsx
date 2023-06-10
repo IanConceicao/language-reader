@@ -4,7 +4,7 @@ import ModeNightIcon from "@mui/icons-material/ModeNight";
 import { Stack, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useContext } from "react";
-import CustomIconButton from "./SlowIconButton";
+import CustomIconButton from "./slowIconButton";
 import { ColorModeContext } from "@/pages/_app";
 
 interface NavbarPropos {}

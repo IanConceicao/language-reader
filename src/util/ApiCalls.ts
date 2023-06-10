@@ -1,4 +1,5 @@
-import { DETECT_LANGUAGE } from "../data/SupportedLanguages";
+import exampleQuiz from "@/data/exampleQuiz";
+import { DETECT_LANGUAGE } from "../data/supportedLanguages";
 import Question from "./types/Question";
 // TODO: Make this file basically what the backend was
 const BACKEND_URL =
@@ -44,6 +45,7 @@ export const translateAndCreateQuiz = async (
     text: text,
     mock: mock ? mock : null,
   };
+  await new Promise((r) => setTimeout(r, 8000)); // Mimic API call delay
   // Ommited code
-  return [];
+  return exampleQuiz;
 };

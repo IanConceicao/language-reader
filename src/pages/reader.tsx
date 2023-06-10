@@ -10,8 +10,8 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Quiz from "@/components/Reader/Quiz";
 import SelectionPopover from "@/components/Reader/SelectionPopover";
-import { DETECT_LANGUAGE, supportedLanguages } from "@/data/SupportedLanguages";
-import { detectLanguage, translate } from "../util/ApiCalls";
+import { DETECT_LANGUAGE, supportedLanguages } from "@/data/supportedLanguages";
+import { detectLanguage, translate } from "../util/apiCalls";
 import type { NextPage } from "next";
 import { useSearchParams } from "next/navigation";
 
@@ -125,38 +125,38 @@ const Reader: NextPage = () => {
   };
 
   return (
-    <ClickAwayListener onClickAway={hideTranslation}>
-      <Stack
-        direction="column"
-        spacing={3}
-        onMouseUp={updateTranslation}
-        onMouseDown={hideTranslation}
-      >
-        <Stack direction="column" spacing={1.5}>
-          <Stack alignItems="center" direction="row" spacing={2}>
-            <CreateIcon />
-            <Typography
-              variant="h6"
-              className="disable-text-selection"
-              fontFamily={"courier, monospace"}
-              lineHeight={1.1}
-            >
-              Highlight any words or sentences for a translation
-            </Typography>
-          </Stack>
-          <Stack alignItems="center" direction="row" spacing={2}>
-            <QuizOutlinedIcon />
-            <Typography
-              variant="h6"
-              className="disable-text-selection"
-              fontFamily={"courier, monospace"}
-              lineHeight={1.1}
-            >
-              Take a quiz on this text at the end
-            </Typography>
-          </Stack>
+    <Stack direction="column" spacing={3}>
+      <Stack direction="column" spacing={1.5}>
+        <Stack alignItems="center" direction="row" spacing={2}>
+          <CreateIcon />
+          <Typography
+            variant="h6"
+            className="disable-text-selection"
+            fontFamily={"courier, monospace"}
+            lineHeight={1.1}
+          >
+            Highlight any words or sentences for a translation
+          </Typography>
         </Stack>
-        <Paper elevation={2} sx={{ py: 2, px: 3, minHeight: "50vh" }}>
+        <Stack alignItems="center" direction="row" spacing={2}>
+          <QuizOutlinedIcon />
+          <Typography
+            variant="h6"
+            className="disable-text-selection"
+            fontFamily={"courier, monospace"}
+            lineHeight={1.1}
+          >
+            Take a quiz on this text at the end
+          </Typography>
+        </Stack>
+      </Stack>
+      <ClickAwayListener onClickAway={hideTranslation}>
+        <Paper
+          elevation={2}
+          sx={{ py: 2, px: 3, minHeight: "50vh" }}
+          onMouseUp={updateTranslation}
+          onMouseDown={hideTranslation}
+        >
           <Typography
             variant="subtitle1"
             style={{ whiteSpace: "pre-wrap", display: "inline-block" }}
@@ -169,13 +169,14 @@ const Reader: NextPage = () => {
             display={shouldDisplayPopover}
           />
         </Paper>
-        <Quiz
-          text={text}
-          inputLanguage={inputLanugage}
-          outputLanguage={outputLanguage}
-        />
-      </Stack>
-    </ClickAwayListener>
+      </ClickAwayListener>
+
+      <Quiz
+        text={text}
+        inputLanguage={inputLanugage}
+        outputLanguage={outputLanguage}
+      />
+    </Stack>
   );
 };
 
