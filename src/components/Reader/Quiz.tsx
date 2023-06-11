@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import QuestionPrompt from "./QuestionPrompt";
 import QuizFailedLoad from "./QuizFailedLoad";
 import QuizLoader from "./QuizLoader";
-import Question from "@/pages/util/types/Question";
+import Question from "@/pages/api/util/types/question";
 import { TranslateAndCreateQuizResponse } from "@/pages/api/translate-and-create-quiz";
 
 interface QuizProps {

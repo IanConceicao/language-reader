@@ -8,7 +8,7 @@ import { createContext, useEffect, useMemo, useState } from "react";
 import lightTheme from "@/themes/lightTheme";
 import darkTheme from "@/themes/darkTheme";
 import { Container } from "@mui/material";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

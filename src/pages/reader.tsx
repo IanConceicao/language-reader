@@ -13,7 +13,7 @@ import SelectionPopover from "@/components/Reader/SelectionPopover";
 import {
   DETECT_LANGUAGE,
   supportedLanguages,
-} from "@/pages/util/data/supportedLanguages";
+} from "@/pages/api/util/data/supportedLanguages";
 import type { NextPage } from "next";
 import { useSearchParams } from "next/navigation";
 import { DetectLanguageResponse } from "./api/detect-language";

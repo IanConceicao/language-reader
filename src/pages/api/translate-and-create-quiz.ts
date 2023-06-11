@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { translateAndCreateQuiz } from "../util/apiCalls";
-import Question from "../util/types/Question";
+import { translateAndCreateQuiz } from "./util/apiCalls";
+import Question from "./util/types/question";
 
 interface TranslateAndCreateQuizNextApiRequest extends NextApiRequest {
   body: {

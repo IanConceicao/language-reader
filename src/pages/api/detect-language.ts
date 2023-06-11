@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { detectLanguage } from "../util/apiCalls";
+import { detectLanguage } from "./util/apiCalls";
 
 interface DetectLanguageNextApiRequest extends NextApiRequest {
   body: {

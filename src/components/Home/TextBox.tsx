@@ -15,8 +15,8 @@ import { useRouter } from "next/router";
 import {
   DETECT_LANGUAGE,
   supportedLanguages,
-} from "../../pages/util/data/supportedLanguages";
-import SwapArrow from "./swapArrow";
+} from "../../pages/api/util/data/supportedLanguages";
+import SwapArrow from "./SwapArrow";
 import { useSearchParams } from "next/navigation";
 
 interface TextBoxProps {}

@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { useState } from "react";
-import Question from "@/util/types/Question";
+import Question from "@/pages/api/util/types/question";
 
 interface QuestionPromptProps {
   question: Question;

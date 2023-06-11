@@ -1,6 +1,6 @@
-import exampleQuiz from "@/pages/util/data/exampleQuiz";
+import exampleQuiz from "@/pages/api/util/data/exampleQuiz";
 import { DETECT_LANGUAGE } from "./data/supportedLanguages";
-import Question from "./types/Question";
+import Question from "./types/question";
 import { getIsoForLanguage, getLanguageFromIso } from "./isoConvert";
 import dedent from "ts-dedent";
 const { TranslationServiceClient } = require("@google-cloud/translate").v3;
@@ -79,12 +79,8 @@ export const translateAndCreateQuiz = async (
   } else {
     const translatedText = await translate(inputLanguage, outputLanguage, text);
 
-    const languageHelper = inputLanguage
-      ? `The article is in ${inputLanguage}, so also write the quiz in ${inputLanguage}.`
-      : "";
-
     const prompt = dedent`
-      Read the article below and create a multiple choice quiz in JSON format with 4 questions and 4 answer choices per question. Make each question only have 1 right answer, and randomize the order of the correct answers. ${languageHelper} Return the quiz in JSON as a list of Questions, where a Question is defined as:
+      Read the article below and create a multiple choice quiz in JSON format with 4 questions and 4 answer choices per question. Make each question only have 1 right answer, and randomize the order of the correct answers. The article is in ${outputLanguage}, so also write the quiz in ${outputLanguage}. Return the quiz in JSON as a list of Questions, where a Question is defined as:
 
       interface Question {
       prompt: string;

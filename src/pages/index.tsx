@@ -2,7 +2,7 @@ import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDo
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 import type { NextPage } from "next";
-import TextBox from "@/components/Home/textBox";
+import TextBox from "@/components/Home/TextBox";
 
 const Home: NextPage = () => {
   return (
