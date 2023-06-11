@@ -7,6 +7,7 @@ import QuestionPrompt from "./QuestionPrompt";
 import QuizFailedLoad from "./QuizFailedLoad";
 import QuizLoader from "./QuizLoader";
 import Question from "@/pages/util/types/Question";
+import { TranslateAndCreateQuizResponse } from "@/pages/api/translate-and-create-quiz";
 
 interface QuizProps {
   text: string;
@@ -28,15 +29,22 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
     setDisableQuizButton(true);
     setShowPlaceHolder(true);
     scrollToQuiz();
-    const questionReturn: Question[] | null = []; // TODO: Change here
 
-    // await translateAndCreateQuiz(
-    //   inputLanguage,
-    //   outputLanguage,
-    //   text
-    // );
-    if (questionReturn !== null) {
-      setQuestions(questionReturn);
+    const res = await fetch("/api/translate-and-create-quiz", {
+      method: "POST",
+      body: JSON.stringify({
+        inputLanguage: inputLanguage,
+        outputLanguage: outputLanguage,
+        text: text,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.ok) {
+      const data = (await res.json()) as TranslateAndCreateQuizResponse;
+      const questions = data.quiz;
+      setQuestions(questions);
     } else {
       setShowError(true);
     }

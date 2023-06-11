@@ -37,17 +37,17 @@ const Reader: NextPage = () => {
     const setInitialTextAndLanguages = () => {
       setInputLanguage(
         searchParams.get("inputLanguage") ||
-          sessionStorage.getItem("inputLanguage") ||
+          localStorage.getItem("inputLanguage") ||
           supportedLanguages[0]
       );
 
       setOutputLanguage(
         searchParams.get("outputLanguage") ||
-          sessionStorage.getItem("outputLanguage") ||
+          localStorage.getItem("outputLanguage") ||
           supportedLanguages[1]
       );
 
-      setText(sessionStorage.getItem("text") || "hello");
+      setText(localStorage.getItem("text") || "hello");
     };
 
     setInitialTextAndLanguages();
@@ -65,9 +65,8 @@ const Reader: NextPage = () => {
         },
       });
       const data = (await res.json()) as DetectLanguageResponse;
-      console.log("Data on detect language is", data);
       setInputLanguage(data.language);
-      sessionStorage.setItem("inputLanguage", data.language);
+      localStorage.setItem("inputLanguage", data.language);
     };
 
     if (!triedToDetectLang && text && inputLanguage === DETECT_LANGUAGE) {
@@ -144,7 +143,7 @@ const Reader: NextPage = () => {
       },
     });
     const data = (await res.json()) as TranslationLanguageResponse;
-
+    // TODO: Add a res.ok check and display an error message if we can't translate
     setTranslation(data.translation);
     setShouldDisplayPopover(true);
   };

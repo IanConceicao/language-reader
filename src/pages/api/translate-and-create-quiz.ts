@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { detectLanguage, translateAndCreateQuiz } from "../util/apiCalls";
+import { translateAndCreateQuiz } from "../util/apiCalls";
 import Question from "../util/types/Question";
 
 interface TranslateAndCreateQuizNextApiRequest extends NextApiRequest {
@@ -11,7 +11,7 @@ interface TranslateAndCreateQuizNextApiRequest extends NextApiRequest {
   };
 }
 
-interface TranslateAndCreateQuizResponse {
+export interface TranslateAndCreateQuizResponse {
   quiz: Question[];
 }
 
@@ -19,7 +19,7 @@ export default async function handler(
   req: TranslateAndCreateQuizNextApiRequest,
   res: NextApiResponse<TranslateAndCreateQuizResponse>
 ) {
-  const quiz = await translateAndCreateQuiz(
+  const quiz: Question[] = await translateAndCreateQuiz(
     req.body.inputLanguage,
     req.body.outputLanguage,
     req.body.text,

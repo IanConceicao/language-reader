@@ -10,12 +10,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   DETECT_LANGUAGE,
@@ -33,29 +28,57 @@ const TextBox: React.FC<TextBoxProps> = () => {
   const [error, setError] = useState(false);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const setInitialTextAndLanguages = () => {
-      setInputLanguage(
+      const chosenInputLang =
         searchParams.get("inputLanguage") ||
-          sessionStorage.getItem("inputLanguage") ||
-          supportedLanguages[0]
-      );
+        localStorage.getItem("inputLanguage") ||
+        supportedLanguages[3];
 
-      setOutputLanguage(
+      const chosenOutputLang =
         searchParams.get("outputLanguage") ||
-          sessionStorage.getItem("outputLanguage") ||
-          supportedLanguages[1]
-      );
+        localStorage.getItem("outputLanguage") ||
+        supportedLanguages[1];
 
-      setText(sessionStorage.getItem("text") || "hello");
+      setOutputLanguagePersistent(chosenOutputLang);
+      setInputLanguagePersistent(chosenInputLang);
+
+      setTextPersistent(localStorage.getItem("text") || "hello");
     };
 
     setInitialTextAndLanguages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const router = useRouter();
+  const setInputLanguagePersistent = (language: string) => {
+    setInputLanguage(language);
+    localStorage.setItem("inputLanguage", language);
+  };
+
+  const setOutputLanguagePersistent = (language: string) => {
+    setOutputLanguage(language);
+    localStorage.setItem("outputLanguage", language);
+  };
+
+  const setTextPersistent = (text: string) => {
+    setText(text);
+    localStorage.setItem("text", text);
+  };
+
+  useEffect(() => {
+    // languages were somehow set to the same value
+    if (inputLanguage === outputLanguage) {
+      setOutputLanguagePersistent(
+        supportedLanguages.filter(
+          (elem) => elem !== inputLanguage && elem !== DETECT_LANGUAGE
+        )[0]
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outputLanguage, inputLanguage]);
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -74,31 +97,22 @@ const TextBox: React.FC<TextBoxProps> = () => {
 
   const handleClearText = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setText("");
+    setTextPersistent("");
   };
 
   const handleInputLanguageSelect = (e: SelectChangeEvent) => {
-    setInputLanguage(e.target.value);
-    sessionStorage.setItem("inputLanguage", e.target.value);
-
-    if (e.target.value === outputLanguage) {
-      const newOutputLang: string = supportedLanguages.filter(
-        (elem) => elem !== e.target.value && elem !== DETECT_LANGUAGE
-      )[0];
-      setOutputLanguage(newOutputLang);
-      sessionStorage.setItem("outputLanguage", newOutputLang);
-    }
+    setInputLanguagePersistent(e.target.value);
   };
 
   const handleOutputLanguageSelect = (e: SelectChangeEvent) => {
-    setOutputLanguage(e.target.value);
-    sessionStorage.setItem("outputLanguage", e.target.value);
+    setOutputLanguagePersistent(e.target.value);
   };
 
   const swapLanguages = () => {
-    const temp = inputLanguage;
-    setInputLanguage(outputLanguage);
-    setOutputLanguage(temp);
+    const tempOutput = outputLanguage;
+    setInputLanguagePersistent(""); // Avoid strange asynchronous changes from them ever being equal
+    setOutputLanguagePersistent(inputLanguage);
+    setInputLanguagePersistent(tempOutput);
   };
 
   const MenuProps = {
@@ -113,8 +127,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const val = e.target.value.replaceAll("\n", "\n");
-    setText(val);
-    sessionStorage.setItem("text", val);
+    setTextPersistent(val);
   };
 
   const makeTextBoxLabel = (): string => {
