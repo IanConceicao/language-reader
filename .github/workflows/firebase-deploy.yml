@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
     paths:
       - "firebase/functions/**"
 jobs:
@@ -17,14 +17,14 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/firebase-functions-actions/functions/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/firebase/functions/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Build Cloud Functions
         run: npm ci
-        working-directory: firebase-functions-actions/functions
+        working-directory: firebase/functions
       - name: Create SA key
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
       - name: Deploy Cloud Functions
         run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions --json
-        working-directory: firebase-functions-actions
+        working-directory: firebase
