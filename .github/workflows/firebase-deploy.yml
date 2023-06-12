@@ -3,13 +3,13 @@ name: Deploy to Firebase Functions via github action
   push:
     branches:
       - main
-env:
-  CI: false
-  FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      CI: false
+      FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
