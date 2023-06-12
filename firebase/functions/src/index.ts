@@ -52,7 +52,6 @@ export const createQuiz = onRequest(
 
         ${text}
         `;
-      console.log("Sending this prompt to openai:\n", prompt);
       try {
         const theResponse = await openai.createChatCompletion({
           model: "gpt-3.5-turbo",

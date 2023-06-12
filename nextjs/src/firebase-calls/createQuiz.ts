@@ -12,15 +12,9 @@ import Question from "@/api-utils/types/question";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyB9nJiNeyno6xt5Z3MoJ2iXKq5g2gco290",
-  authDomain: "language-reader-379923.firebaseapp.com",
-  projectId: "language-reader-379923",
-  storageBucket: "language-reader-379923.appspot.com",
-  messagingSenderId: "974780501043",
-  appId: "1:974780501043:web:16d3622657e26491f3e746",
-  measurementId: "G-YLS5FNYMF4",
-};
+const firebaseConfig = JSON.parse(
+  process.env.NEXT_PUBLIC_FIRE_BASE_CONFIG || "{}"
+);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
