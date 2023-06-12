@@ -23,10 +23,9 @@
 <p>This site is a work in progress, there is still much more to come. <p>
 
 - ✅ Highlight any piece of text to translate it
+- ✅ Automatically create a multiple choice quiz based on the text
 - ✅ Supports most common languages
 - ✅ Dark Mode
-- ✅ Auto-detect input language
-- 🔲 Create multiple choice quiz based on the text
 - 🔲 Provide some default texts for the user to demo the site with
 - 🔲 Text to speech for word and sentence pronounciation
 - 🔲 Support other input types, like scanning a book
