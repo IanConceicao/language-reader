@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import {
   DETECT_LANGUAGE,
   supportedLanguages,
-} from "../../pages/api/util/data/supportedLanguages";
+} from "../../api-utils/data/supportedLanguages";
 import SwapArrow from "./SwapArrow";
 import { useSearchParams } from "next/navigation";
 

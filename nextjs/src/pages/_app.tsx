@@ -60,11 +60,11 @@ export default function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Language Learner</title>
+        <title>Language Reader</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <meta
           name="description"
-          content="Learn a language with interactive translation and more"
+          content="Learn a language by reading with interactive translation. Generate a quiz in any language based on a text."
         />
       </Head>
       <ColorModeContext.Provider value={colorMode}>

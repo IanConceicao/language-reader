@@ -1,10 +1,10 @@
-import exampleQuiz from "@/pages/api/util/data/exampleQuiz";
+import exampleQuiz from "@/api-utils/data/exampleQuiz";
 import { DETECT_LANGUAGE } from "./data/supportedLanguages";
 import Question from "./types/question";
 import { getIsoForLanguage, getLanguageFromIso } from "./isoConvert";
-import dedent from "ts-dedent";
 const { TranslationServiceClient } = require("@google-cloud/translate").v3;
-const { Configuration, OpenAIApi } = require("openai");
+
+// REMINDER: This file runs on backend
 
 const translationCredentials = JSON.parse(
   process.env.GOOGLE_TRANSLATE_CREDENTIALS || "{}"
@@ -59,58 +59,4 @@ export const detectLanguage = async (text: string): Promise<string> => {
     );
   }
   return getLanguageFromIso(languageCode);
-};
-
-const openai = new OpenAIApi(
-  new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  })
-);
-
-export const translateAndCreateQuiz = async (
-  inputLanguage: string,
-  outputLanguage: string,
-  text: string,
-  mock?: boolean
-): Promise<Question[]> => {
-  if (mock) {
-    await new Promise((r) => setTimeout(r, 5000)); // Mimic API call delay
-    return exampleQuiz;
-  } else {
-    const translatedText = await translate(inputLanguage, outputLanguage, text);
-
-    const prompt = dedent`
-      Read the article below and create a multiple choice quiz in JSON format with 4 questions and 4 answer choices per question. Make each question only have 1 right answer, and randomize the order of the correct answers. The article is in ${outputLanguage}, so also write the quiz in ${outputLanguage}. Return the quiz in JSON as a list of Questions, where a Question is defined as:
-
-      interface Question {
-      prompt: string;
-      answers: string[];
-      correctAnswer: number;  // The index of the correct answer
-      answerExplanation: string;
-      }
-      
-      The article:
-
-      ${translatedText}
-      `;
-    try {
-      const theResponse = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-      });
-      const message = theResponse.data.choices[0].message.content as string;
-      const onlyArrayPortion = message.substring(
-        message.indexOf("["),
-        message.lastIndexOf("]") + 1
-      );
-      return JSON.parse(onlyArrayPortion);
-    } catch (e: any) {
-      const errorMsg = e.response
-        ? JSON.stringify(e.response.data.error.message)
-        : e.message;
-      throw Error(
-        `ChatGPT failed to generate the quiz in language ${inputLanguage} ${errorMsg}. Response status: ${e.response.status}`
-      );
-    }
-  }
 };

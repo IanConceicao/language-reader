@@ -6,8 +6,9 @@ import { useRef, useState } from "react";
 import QuestionPrompt from "./QuestionPrompt";
 import QuizFailedLoad from "./QuizFailedLoad";
 import QuizLoader from "./QuizLoader";
-import Question from "@/pages/api/util/types/question";
-import { TranslateAndCreateQuizResponse } from "@/pages/api/translate-and-create-quiz";
+import Question from "@/api-utils/types/question";
+import { createQuiz, createQuizParams } from "@/firebase-calls/createQuiz";
+import { TranslationLanguageResponse } from "@/pages/api/translate";
 
 interface QuizProps {
   text: string;
@@ -25,12 +26,23 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
   const [showError, setShowError] = useState(false);
   const quizRef = useRef<HTMLDivElement>(null);
 
-  const getQuestions = async () => {
+  const makeQuiz = async () => {
     setDisableQuizButton(true);
     setShowPlaceHolder(true);
     scrollToQuiz();
 
-    const res = await fetch("/api/translate-and-create-quiz", {
+    const translatedText = await translateText();
+    const questions = await getQuestions(translatedText);
+    if (questions) {
+      setQuestions(questions);
+    } else {
+      setShowError(true);
+    }
+    setShowPlaceHolder(false);
+  };
+
+  const translateText = async () => {
+    const res = await fetch("/api/translate", {
       method: "POST",
       body: JSON.stringify({
         inputLanguage: inputLanguage,
@@ -41,14 +53,17 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
         "Content-Type": "application/json",
       },
     });
-    if (res.ok) {
-      const data = (await res.json()) as TranslateAndCreateQuizResponse;
-      const questions = data.quiz;
-      setQuestions(questions);
-    } else {
-      setShowError(true);
-    }
-    setShowPlaceHolder(false);
+    const data = (await res.json()) as TranslationLanguageResponse;
+    return data.translation;
+  };
+
+  const getQuestions = async (translatedText: string) => {
+    const createQuizBody: createQuizParams = {
+      language: outputLanguage,
+      text: translatedText,
+      mock: false,
+    };
+    return await createQuiz(createQuizBody);
   };
 
   const scrollToQuiz = () => {
@@ -70,7 +85,7 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
           variant="extended"
           sx={{ boxShadow: 3 }}
           disabled={disableQuizButton}
-          onClick={getQuestions}
+          onClick={makeQuiz}
         >
           <QuizOutlinedIcon sx={{ mr: 2 }} />
           Take a quiz
