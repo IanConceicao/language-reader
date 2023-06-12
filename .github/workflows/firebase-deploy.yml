@@ -11,10 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Firebase
+        run: npm install --save firebase
 
       - name: Download deps
         working-directory: firebase/functions
-        run: npm install --save firebase && npm install
+        run: npm install
 
       - name: Deploy
         working-directory: firebase/functions
