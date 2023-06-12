@@ -16,7 +16,7 @@ jobs:
           node-version: 18
 
       - name: Install Firebase
-        run: npm install --save firebase
+        run: npm install -g firebase-tools
 
       - name: Download deps
         working-directory: firebase/functions
