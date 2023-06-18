@@ -36,6 +36,10 @@ const QuestionPrompt: React.FC<QuestionPromptProps> = ({
                 height: "100%",
                 border: 2,
                 borderColor: "transparent",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+                transition: "all 0.2s ease-in-out",
                 ...(index === userSelected &&
                   userIsCorrect && {
                     borderColor: "success.light",
