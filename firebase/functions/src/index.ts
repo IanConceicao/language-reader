@@ -30,6 +30,8 @@ const openai = new OpenAIApi(
 export const createQuiz = onRequest(
   { cors: true, timeoutSeconds: 100 },
   async (request, response) => {
+    const MAX_WORD_COUNT = 2000;
+
     const language: string = request.body.data.language;
     const text: string = request.body.data.text;
     const mock: boolean = request.body.data.mock ? true : false;
@@ -38,7 +40,16 @@ export const createQuiz = onRequest(
       await new Promise((r) => setTimeout(r, 5000)); // Mimic API call delay
       response.send({ data: { quiz: exampleQuiz } });
     } else {
-      const prompt = dedent`
+      const wordCount: number = text.trim().split(/\s+/).length;
+
+      if (wordCount > MAX_WORD_COUNT) {
+        response
+          .status(400)
+          .send(
+            `Too many words given. Given ${wordCount} but maximum is ${MAX_WORD_COUNT}`
+          );
+      } else {
+        const prompt = dedent`
         Read the article below and create a multiple choice quiz in JSON format with 4 questions and 4 answer choices per question. Make each question only have 1 right answer, and randomize the order of the correct answers. The article is in ${language}, so also write the quiz in ${language}. Return the quiz in JSON as a list of Questions, where a Question is defined as:
 
         interface Question {
@@ -52,26 +63,30 @@ export const createQuiz = onRequest(
 
         ${text}
         `;
-      try {
-        const theResponse = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-        });
-        if (theResponse.data.choices[0].message) {
-          const message = theResponse.data.choices[0].message.content as string;
-          const onlyArrayPortion = message.substring(
-            message.indexOf("["),
-            message.lastIndexOf("]") + 1
+        try {
+          const theResponse = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: prompt }],
+          });
+          if (theResponse.data.choices[0].message) {
+            const message = theResponse.data.choices[0].message
+              .content as string;
+            const onlyArrayPortion = message.substring(
+              message.indexOf("["),
+              message.lastIndexOf("]") + 1
+            );
+            response.send({
+              data: { quiz: JSON.parse(onlyArrayPortion) },
+            });
+          } else {
+            throw Error("No messages return by ChatGPT");
+          }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (e: any) {
+          throw Error(
+            `ChatGPT failed to generate the quiz in language ${language}\n: ${e.message}.`
           );
-          response.send({ data: { quiz: JSON.parse(onlyArrayPortion) } });
-        } else {
-          throw Error("No messages return by ChatGPT");
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (e: any) {
-        throw Error(
-          `ChatGPT failed to generate the quiz in language ${language}\n: ${e.message}.`
-        );
       }
     }
   }

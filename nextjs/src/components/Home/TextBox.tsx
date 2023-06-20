@@ -26,6 +26,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
   const [inputLanguage, setInputLanguage] = useState("");
   const [outputLanguage, setOutputLanguage] = useState("");
   const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -81,10 +82,19 @@ const TextBox: React.FC<TextBoxProps> = () => {
   }, [outputLanguage, inputLanguage]);
 
   const handleSubmit = (e: React.SyntheticEvent) => {
+    const MAX_WORD_COUNT = 2000;
+    const wordCount: number = text.trim().split(/\s+/).length;
+
     e.preventDefault();
 
-    if (!text) {
+    if (wordCount == 0) {
       setError(true);
+      setErrorText("");
+    } else if (wordCount > MAX_WORD_COUNT) {
+      setError(true);
+      setErrorText(
+        `Please enter less than ${MAX_WORD_COUNT} words. You entered ${wordCount}.`
+      );
     } else {
       setError(false);
 
@@ -155,7 +165,7 @@ const TextBox: React.FC<TextBoxProps> = () => {
                 value={text}
                 fullWidth
                 error={error}
-                helperText={error ? "Enter some text" : ""}
+                helperText={error ? errorText : ""}
               />
             </Box>
           </Grid>
