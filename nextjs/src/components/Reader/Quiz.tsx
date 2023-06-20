@@ -33,8 +33,9 @@ const Quiz: React.FC<QuizProps> = (props: QuizProps) => {
 
     const translatedText = await translateText();
     const questions = await getQuestions(translatedText);
-    if (questions) {
+    if (questions.length > 1) {
       setQuestions(questions);
+      setShowError(false);
     } else {
       setShowError(true);
     }
